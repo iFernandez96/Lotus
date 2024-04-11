@@ -13,10 +13,6 @@
         android:theme="@style/Theme.Lotus"
         tools:targetApi="31">
         <activity
-            android:name=".LandingPage"
-            android:exported="false"
-            android:label="@string/title_activity_landing_page" />
-        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
