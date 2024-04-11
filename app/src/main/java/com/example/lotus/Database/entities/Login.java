@@ -3,7 +3,7 @@ package com.example.lotus.Database.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -11,8 +11,7 @@ import java.util.Objects;
 public class Login {
     private String username;
     private String password;
-
-    private LocalDate date;
+    private LocalDateTime date;
     @PrimaryKey(autoGenerate = true)
     private int ID;
 
@@ -32,11 +31,11 @@ public class Login {
         this.password = password;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -62,7 +61,7 @@ public class Login {
     }
 
     public Login() {
-        date = LocalDate.now();
+        date = LocalDateTime.now();
     }
 }
 

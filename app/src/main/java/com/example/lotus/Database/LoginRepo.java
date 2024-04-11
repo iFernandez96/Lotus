@@ -18,15 +18,17 @@ public class LoginRepo {
     public LoginRepo(Application app) {
         LoginDatabase db = LoginDatabase.getDatabase(app);
         this.loginDAO = db.loginDao();
-        this.allLogins = this.loginDAO.getAllRecords();
+        this.allLogins = (ArrayList<Login>) this.loginDAO.getAllRecords();
     }
 
+    //abstraction to get all records on a thread
     public ArrayList<Login> getAllLogins() {
-        Future<ArrayList<Login>> future = LoginDatabase.databaseWriteExecutor.submit(
+        //uses future
+        Future<ArrayList<Login>> future = LoginDatabase.databaseWriteExecutor.submit( //want to submit this our thread
                 new Callable<ArrayList<Login>>() {
                     @Override
                     public ArrayList<Login> call() throws Exception {
-                        return loginDAO.getAllRecords();
+                        return (ArrayList<Login>) loginDAO.getAllRecords();
                     }
                 }
         );
