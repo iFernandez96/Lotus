@@ -17,5 +17,5 @@ public interface LoginDAO {
 
     @Query("Select * from " + LoginDatabase.LOGIN_TABLE)
 
-    ArrayList<Login> getAllRecords();
+    List<Login> getAllRecords();
 }
