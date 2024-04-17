@@ -35,7 +35,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v){
                 Username = loginBinding.editTextTextEmailAddress.getText().toString();
                 Password = loginBinding.editTextTextPassword.getText().toString();
+
                 insertLoginRecord();
+                Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
+                startActivity(intent);
             }
         });
     }
