@@ -16,6 +16,5 @@ public interface LoginDAO {
     void insert(Login login);
 
     @Query("Select * from " + LoginDatabase.LOGIN_TABLE)
-
     List<Login> getAllRecords();
 }
