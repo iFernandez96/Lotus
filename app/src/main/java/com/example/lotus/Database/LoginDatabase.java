@@ -12,18 +12,21 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.lotus.Database.entities.Login;
+import com.example.lotus.Database.entities.User;
 import com.example.lotus.Database.typeConverter.LocalDateTypeConverter;
 import com.example.lotus.MainActivity;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 //Deleting the 1 will erase the entire database!!!!
 @TypeConverters(LocalDateTypeConverter.class)
-@Database(entities = {Login.class},version = 1, exportSchema = false)
+@Database(entities = {Login.class, User.class},version = 1, exportSchema = false)
 public abstract class LoginDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME= "login_database";
+    public static final String USER_TABLE = "com.example.lotus.Database.entities.User Table";
     public static final String LOGIN_TABLE = "LoginTable";
 
     private static volatile LoginDatabase INSTANCE;
@@ -53,12 +56,26 @@ public abstract class LoginDatabase extends RoomDatabase {
             super.onCreate(db);
             databaseWriteExecutor.execute(() -> {
                 // Your initialization code here, e.g., inserting default users
-                LoginDAO dao = INSTANCE.loginDao(); // Ensure you can access dao here or find an alternative approach
-                dao.insert(new Login("defaultUser", "defaultPass"));
-                Log.i(MainActivity.TAG, "Database created and default user added");
+                Log.i(MainActivity.TAG, "Database created");
+                databaseWriteExecutor.execute(() ->{
+                    UserDao dao = INSTANCE.userDao();
+                    dao.deleteAll();
+                    User admin = new User("admin1", "admin1");
+                    admin.setAdmin(true);
+                    dao.insert(admin);
+
+                    User testUser1= new User("testuser1", "testuser1");
+                    dao.insert(testUser1);
+                        });
+
+                //LoginDAO dao = INSTANCE.loginDao(); // Ensure you can access dao here or find an alternative approach
+                //dao.insert(new Login("defaultUser", "defaultPass"));
+                //Log.i(MainActivity.TAG, "Database created and default user added");
             });
         }
     };
 
     public abstract LoginDAO loginDao();
+
+    public abstract UserDao userDao();
 }

@@ -35,11 +35,15 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v){
                 Username = loginBinding.editTextTextEmailAddress.getText().toString();
                 Password = loginBinding.editTextTextPassword.getText().toString();
+                Toast.makeText(getApplicationContext(),"Login check " + Username + " Password = " + Password, Toast.LENGTH_SHORT).show();
                 insertLoginRecord();
             }
         });
     }
 
+    private  void checkLogin(String username){
+       //TODO do this check for user
+    }
     private void insertLoginRecord() {
         if (!Objects.equals(Username, "") || !Objects.equals(Password, "")){
             Login log = new Login(Username, Password);

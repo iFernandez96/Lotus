@@ -51,4 +51,5 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(MAIN_ACTIVITY_KEY, receiviedValue);
         return intent;
     }
+
 }
