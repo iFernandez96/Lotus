@@ -30,8 +30,6 @@ public class LoginActivity extends AppCompatActivity {
         repository = LoginRepo.getRepo(getApplication());
         ActivityLoginBinding loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(loginBinding.getRoot());
-        Username = loginBinding.editTextTextEmailAddress.getText().toString();
-        Password = loginBinding.editTextTextPassword.getText().toString();
         loginBinding.loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
