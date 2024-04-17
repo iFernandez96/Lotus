@@ -1,11 +1,7 @@
 package com.example.lotus.Database;
 
 import android.app.Application;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-
-import androidx.room.Database;
 
 import com.example.lotus.Database.entities.Login;
 import com.example.lotus.Database.entities.User;
@@ -17,8 +13,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class LoginRepo {
-    private LoginDAO loginDAO;
-    private ArrayList<Login> allLogins;
+    private final LoginDAO loginDAO;
+    private ArrayList<User> allLogins;
     private static LoginRepo repository;
 
     private final UserDao userDao;
@@ -27,17 +23,17 @@ public class LoginRepo {
         LoginDatabase db = LoginDatabase.getDatabase(app);
         this.loginDAO = db.loginDao();
         this.userDao = db.userDao();
-        this.allLogins = (ArrayList<Login>) this.loginDAO.getAllRecords();
+        this.allLogins = (ArrayList<User>) this.userDao.getAllUsers();
     }
 
     //abstraction to get all records on a thread
-    public ArrayList<Login> getAllLogins() {
+    public ArrayList<User> getAllLogins() {
         //uses future
-        Future<ArrayList<Login>> future = LoginDatabase.databaseWriteExecutor.submit( //want to submit this our thread
-                new Callable<ArrayList<Login>>() {
+        Future<ArrayList<User>> future = LoginDatabase.databaseWriteExecutor.submit( //want to submit this our thread
+                new Callable<ArrayList<User>>() {
                     @Override
-                    public ArrayList<Login> call() throws Exception {
-                        return (ArrayList<Login>) loginDAO.getAllRecords();
+                    public ArrayList<User> call() throws Exception {
+                        return (ArrayList<User>) userDao.getAllUsers();
                     }
                 }
         );
@@ -73,17 +69,27 @@ public class LoginRepo {
         void onUsernameChecked(boolean exists);
     }
 
-    public void insertLoginLog(Login login){
-        LoginDatabase.databaseWriteExecutor.execute(() ->
-        {
-            loginDAO.insert(login);
-        });
-    }
-
     public void insertUser2Database(User... user){
         LoginDatabase.databaseWriteExecutor.execute(() ->
         {
             userDao.insert(user);
         });
+    }
+
+    public int countUsernames(String username){
+        Future<Integer> future = LoginDatabase.databaseWriteExecutor.submit(
+                new Callable<Integer>() {
+                    @Override
+                    public Integer call() throws Exception {
+                        return loginDAO.countUsernames(username);
+                    }
+                }
+        );
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            Log.i(MainActivity.TAG, "Problem with getting all User from loginDao in the repo");
+        }
+        return 0;
     }
 }

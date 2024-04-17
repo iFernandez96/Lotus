@@ -12,8 +12,12 @@ import androidx.room.RoomSQLiteQuery;
 
 import com.example.lotus.Database.LoginDatabase;
 import com.example.lotus.Database.LoginRepo;
+import com.example.lotus.Database.UserDao;
 import com.example.lotus.Database.entities.Login;
+import com.example.lotus.Database.entities.User;
 import com.example.lotus.databinding.ActivityLoginBinding;
+
+import org.intellij.lang.annotations.Language;
 
 import java.util.Objects;
 
@@ -41,13 +45,24 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private  void checkLogin(String username){
-       //TODO do this check for user
+    private  boolean checkLogin(String username){
+        if (repository.countUsernames(username) > 0){
+            Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
+            startActivity(intent);
+            return true;
+        } else {
+            Toast.makeText(this, "Username does not exist", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
     private void insertLoginRecord() {
+        if (checkLogin(Username)){
+            Toast.makeText(this, "The User already exists:", Toast.LENGTH_SHORT).show();
+        }
+
         if (!Objects.equals(Username, "") || !Objects.equals(Password, "")){
-            Login log = new Login(Username, Password);
-            repository.insertLoginLog(log);
+            User user = new User(Username, Password);
+            repository.insertUser2Database(user);
         } else {
             Toast.makeText(this, "Please enter a Username AND a Password...", Toast.LENGTH_SHORT).show();
         }
