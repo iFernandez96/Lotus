@@ -4,6 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 
 
@@ -14,6 +15,12 @@ public class Login {
     private LocalDateTime date;
     @PrimaryKey(autoGenerate = true)
     private int ID;
+
+    public Login(String username, String password) {
+        this.username = username;
+        this.password = password;
+        date = LocalDateTime.now(ZoneId.systemDefault());
+    }
 
     public String getUsername() {
         return username;

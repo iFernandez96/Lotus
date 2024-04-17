@@ -14,8 +14,9 @@ import java.util.concurrent.Future;
 public class LoginRepo {
     private LoginDAO loginDAO;
     private ArrayList<Login> allLogins;
+    private static LoginRepo repository;
 
-    public LoginRepo(Application app) {
+    private LoginRepo(Application app) {
         LoginDatabase db = LoginDatabase.getDatabase(app);
         this.loginDAO = db.loginDao();
         this.allLogins = (ArrayList<Login>) this.loginDAO.getAllRecords();
@@ -41,6 +42,25 @@ public class LoginRepo {
         return null;
     }
 
+    public static LoginRepo getRepo(Application app){
+        if (repository != null){
+            return repository;
+        }
+        Future<LoginRepo> future = LoginDatabase.databaseWriteExecutor.submit(
+                new Callable<LoginRepo>() {
+                    @Override
+                    public LoginRepo call() throws Exception {
+                        return new LoginRepo(app);
+                    }
+                }
+        );
+        try {
+            return future.get();
+        }catch (InterruptedException | ExecutionException e){
+            Log.i(MainActivity.TAG, "problem getting log repo, thread error");
+        }
+        return null;
+    }
     public void insertLoginLog(Login login){
         LoginDatabase.databaseWriteExecutor.execute(() ->
         {

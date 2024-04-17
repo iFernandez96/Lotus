@@ -51,8 +51,12 @@ public abstract class LoginDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db){
             super.onCreate(db);
-            //Log.i(MainActivity.TAG, DAtABASE CREATED)
-            //TODO: add databaseWriteExecutor.execute(() -> {...}
+            databaseWriteExecutor.execute(() -> {
+                // Your initialization code here, e.g., inserting default users
+                LoginDAO dao = INSTANCE.loginDao(); // Ensure you can access dao here or find an alternative approach
+                dao.insert(new Login("defaultUser", "defaultPass"));
+                Log.i(MainActivity.TAG, "Database created and default user added");
+            });
         }
     };
 
