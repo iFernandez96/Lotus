@@ -17,4 +17,7 @@ public interface LoginDAO {
 
     @Query("Select * from " + LoginDatabase.LOGIN_TABLE)
     List<Login> getAllRecords();
+
+    @Query("SELECT COUNT(*) FROM " + LoginDatabase.LOGIN_TABLE + " WHERE username = :username")
+    int countUsernames(String username);
 }

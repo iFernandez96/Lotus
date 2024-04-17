@@ -1,9 +1,14 @@
 package com.example.lotus.Database;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
+import androidx.room.Database;
+
 import com.example.lotus.Database.entities.Login;
+import com.example.lotus.Database.entities.User;
 import com.example.lotus.MainActivity;
 
 import java.util.ArrayList;
@@ -16,9 +21,12 @@ public class LoginRepo {
     private ArrayList<Login> allLogins;
     private static LoginRepo repository;
 
+    private final UserDao userDao;
+
     private LoginRepo(Application app) {
         LoginDatabase db = LoginDatabase.getDatabase(app);
         this.loginDAO = db.loginDao();
+        this.userDao = db.userDao();
         this.allLogins = (ArrayList<Login>) this.loginDAO.getAllRecords();
     }
 
@@ -61,10 +69,21 @@ public class LoginRepo {
         }
         return null;
     }
+    public interface OnUsernameCheckListener {
+        void onUsernameChecked(boolean exists);
+    }
+
     public void insertLoginLog(Login login){
         LoginDatabase.databaseWriteExecutor.execute(() ->
         {
             loginDAO.insert(login);
+        });
+    }
+
+    public void insertUser2Database(User... user){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            userDao.insert(user);
         });
     }
 }
