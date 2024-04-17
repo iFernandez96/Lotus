@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_main); //Not needed
         loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view2 = loginBinding.getRoot();
-        Intent intent = LoginActivity.LoginActivityIntentFactory(getApplicationContext(), false);
+        Intent intent = intentFactory.createIntent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
     public static Intent MainActivity(Context context, boolean receiviedValue){
