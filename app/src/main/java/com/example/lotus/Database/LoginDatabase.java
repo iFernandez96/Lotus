@@ -22,11 +22,11 @@ import java.util.concurrent.Executors;
 
 //Deleting the 1 will erase the entire database!!!!
 @TypeConverters(LocalDateTypeConverter.class)
-@Database(entities = {Login.class, User.class},version = 1, exportSchema = false)
+@Database(entities = {Login.class, User.class},version = 2, exportSchema = false)
 public abstract class LoginDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME= "login_database";
-    public static final String USER_TABLE = "com.example.lotus.Database.entities.User Table";
+    public static final String USER_TABLE = "User_Table";
     public static final String LOGIN_TABLE = "LoginTable";
 
     private static volatile LoginDatabase INSTANCE;

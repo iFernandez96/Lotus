@@ -15,9 +15,11 @@ public interface LoginDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Login login);
 
-    @Query("Select * from " + LoginDatabase.LOGIN_TABLE)
-    List<Login> getAllRecords();
+//    @Query("Select * from " + LoginDatabase.LOGIN_TABLE)
+//    List<Login> getAllRecords();
 
     @Query("SELECT COUNT(*) FROM " + LoginDatabase.LOGIN_TABLE + " WHERE username = :username")
-    int countUsernames(String username);
+    Integer countUsernames(String username);
+
+
 }
