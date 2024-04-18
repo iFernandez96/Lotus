@@ -57,8 +57,10 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void insertLoginRecord() {
         if (checkLogin(Username)){
-            Toast.makeText(this, "The User already exists:", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "The User already exists. Please enter a new Username", Toast.LENGTH_SHORT).show();
+            return;
         }
+        //TODO: This needs to be in Register New User Activity...
 
         if (!Objects.equals(Username, "") || !Objects.equals(Password, "")){
             User user = new User(Username, Password);
