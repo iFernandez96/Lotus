@@ -3,7 +3,6 @@ package com.example.lotus.Database;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.lotus.Database.entities.Login;
 import com.example.lotus.Database.entities.User;
 import com.example.lotus.MainActivity;
 
@@ -64,9 +63,6 @@ public class LoginRepo {
         }
         return null;
     }
-    public interface OnUsernameCheckListener {
-        void onUsernameChecked(boolean exists);
-    }
 
     public void insertUser2Database(User... user){
         LoginDatabase.databaseWriteExecutor.execute(() ->
@@ -90,5 +86,28 @@ public class LoginRepo {
             Log.i(MainActivity.TAG, "Problem with getting all User from loginDao in the repo");
         }
         return 0;
+    }
+
+    public void deleteUser(User user){
+        LoginDatabase.databaseWriteExecutor.execute(() -> {
+            userDao.delete(user);
+        });
+    }
+
+    public boolean getUserByUsername(String username){
+        Future<User> future = LoginDatabase.databaseWriteExecutor.submit(
+                new Callable<User>() {
+                    @Override
+                    public User call() throws Exception {
+                        return userDao.getUserByUsername(username);
+                    }
+                }
+        );
+        try {
+            future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            Log.i(MainActivity.TAG, "Problem with getting all User from loginDao in the repo");
+        }
+        return false;
     }
 }
