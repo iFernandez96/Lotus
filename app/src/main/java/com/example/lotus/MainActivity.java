@@ -22,9 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         EdgeToEdge.enable(this);
-//        ActivityLoginBinding loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
-//        View view2 = loginBinding.getRoot();
-        Intent intent = LoginActivity.LoginActivityIntentFactory(getApplicationContext(), false);
+        Intent intent = intentFactory.createIntent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
 }
