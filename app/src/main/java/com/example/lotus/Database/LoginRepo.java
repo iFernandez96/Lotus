@@ -40,7 +40,6 @@ public class LoginRepo {
         try {
             return future.get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
             Log.i(MainActivity.TAG, "Problem with getting all Login Logs in the repo");
         }
         return null;
