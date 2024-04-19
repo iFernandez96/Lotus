@@ -24,8 +24,8 @@ import java.util.concurrent.Executors;
 @Database(entities = {Login.class, User.class},version = 1, exportSchema = false)
 public abstract class LoginDatabase extends RoomDatabase {
 
-    public static final String DATABASE_NAME= "login_database";
-    public static final String USER_TABLE = "User_Table";
+    public static final String DATABASE_NAME= "loginDatabase";
+    public static final String USER_TABLE = "UserTable";
     public static final String LOGIN_TABLE = "LoginTable";
 
     private static volatile LoginDatabase INSTANCE;
