@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private  boolean checkLogin(String username){
+    private boolean checkLogin(String username){
         if (repository.getUserByUsername(username)!=null){
             sendUserToLandingPage(username);
             return true;
