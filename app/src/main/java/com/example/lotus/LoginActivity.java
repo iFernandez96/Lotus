@@ -13,8 +13,6 @@ import com.example.lotus.databinding.ActivityCreateUserBinding;
 import com.example.lotus.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String LOGIN_ACTIVITY_KEY = "LOGIN";
-    public static final String USERNAME_REGISTERD = "LABEL_USERNAME";
     private String Username;
     private String Password;
     private LoginRepo repository;
@@ -26,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         repository = LoginRepo.getRepo(getApplication());
         ActivityLoginBinding loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(loginBinding.getRoot());
-        String usernameFromRegister = getIntent().getStringExtra(USERNAME_REGISTERD);
+        String usernameFromRegister = getIntent().getStringExtra(Constants.USERNAME_REGISTERD);
         loginBinding.editTextTextEmailAddress.setText(usernameFromRegister);
         loginBinding.loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -50,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendUserToLandingPage(String username){
         Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
-        intent.putExtra(LOGIN_ACTIVITY_KEY, username);
+        intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
         startActivity(intent);
     }
 

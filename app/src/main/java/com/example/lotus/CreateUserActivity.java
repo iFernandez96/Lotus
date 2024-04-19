@@ -15,8 +15,6 @@ import com.example.lotus.databinding.ActivityCreateUserBinding;
 import java.util.Objects;
 
 public class CreateUserActivity extends AppCompatActivity {
-    private static final String LOGIN_ACTIVITY_KEY = "LOGIN";
-    public static final String USERNAME_REGISTERD = "LABEL_USERNAME";
     private String username;
     private String password;
     private LoginRepo repository;
@@ -34,16 +32,15 @@ public class CreateUserActivity extends AppCompatActivity {
         Button button = findViewById(R.id.button2);
         ActivityCreateUserBinding binding = ActivityCreateUserBinding.inflate(getLayoutInflater());
         button.setOnClickListener(v->{
-        username = binding.editTextTextEmailAddress2.getText().toString();
-        password = binding.editTextTextPassword2.getText().toString();
-        if(VerifyLogin.checkUserExists(repository,username)) {
-          Toast.makeText(this, "Account Already exist",Toast.LENGTH_SHORT).show();
-        }else{
-          Toast.makeText(this, "Successful Creation of Username",Toast.LENGTH_SHORT).show();
-          Intent i = intentFactory.createIntent(getApplicationContext(), LoginActivity.class);
-          i.putExtra(USERNAME_REGISTERD, username);
-          startActivity(i);
-
+            username = binding.editTextTextEmailAddress2.getText().toString();
+            password = binding.editTextTextPassword2.getText().toString();
+            if(VerifyLogin.checkUserExists(repository,username)) {
+              Toast.makeText(this, "Account Already exist",Toast.LENGTH_SHORT).show();
+            }else{
+              Toast.makeText(this, "Successful Creation of Username",Toast.LENGTH_SHORT).show();
+              Intent i = intentFactory.createIntent(getApplicationContext(), LoginActivity.class);
+              i.putExtra(Constants.USERNAME_REGISTERD, username);
+              startActivity(i);
         }
         });
     }
@@ -65,7 +62,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private boolean checkLogin(String username){
         if (repository.getUserByUsername(username)){
             Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
-            intent.putExtra(LOGIN_ACTIVITY_KEY, username);
+            intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
             startActivity(intent);
             return true;
         } else {
