@@ -18,6 +18,10 @@ public class LandingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_landing_page);
+        ActivityLandingPageBinding landingPageBinding = ActivityLandingPageBinding.inflate(getLayoutInflater());
+        setContentView(landingPageBinding.getRoot());
+        String getUserFromRegister = getIntent().getStringExtra(Constants.USERNAME_REGISTERD);
+        landingPageBinding.usernameView.setText(getUserFromRegister);
         repository = LoginRepo.getRepo(getApplication());
         username = getIntent().getStringExtra(LOGIN_ACTIVITY_KEY);
 
