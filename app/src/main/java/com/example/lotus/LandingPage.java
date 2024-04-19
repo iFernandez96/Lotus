@@ -6,9 +6,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
+import com.example.lotus.databinding.ActivityLandingPageBinding;
 
 public class LandingPage extends AppCompatActivity {
-    private static final String LOGIN_ACTIVITY_KEY = "LOGIN";
     private LoginRepo repository;
     private String username;
     @Override
@@ -16,16 +16,14 @@ public class LandingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_landing_page);
-        repository = LoginRepo.getRepo(getApplication());
-        username = getIntent().getStringExtra(LOGIN_ACTIVITY_KEY);
+        ActivityLandingPageBinding landingPageBinding = ActivityLandingPageBinding.inflate(getLayoutInflater());
+        setContentView(landingPageBinding.getRoot());
+        username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
+        landingPageBinding.usernameView.setText(username);
     }
 
     private boolean checkUserExists(String username){
-        if (repository.getUserByUsername(username)){
-            return true;
-        } else {
-            return false;
-        }
+        return repository.getUserByUsername(username) != null;
     }
 
     @Override
