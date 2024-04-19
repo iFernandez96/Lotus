@@ -30,7 +30,6 @@ public class CreateUserActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Button button = findViewById(R.id.button2);
-
     }
 
     private void insertLoginRecord(String Username, String Password) {
@@ -49,9 +48,6 @@ public class CreateUserActivity extends AppCompatActivity {
     }
     private boolean checkLogin(String username){
         if (repository.getUserByUsername(username)){
-            Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
-            intent.putExtra(LOGIN_ACTIVITY_KEY, username);
-            startActivity(intent);
             return true;
         } else {
             Toast.makeText(this, "Username does not exist", Toast.LENGTH_SHORT).show();
