@@ -9,10 +9,12 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
+import com.example.lotus.databinding.ActivityCreateUserBinding;
 import com.example.lotus.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String LOGIN_ACTIVITY_KEY = "LOGIN";
+    public static final String USERNAME_REGISTERD = "LABEL_USERNAME";
     private String Username;
     private String Password;
     private LoginRepo repository;
@@ -24,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
         repository = LoginRepo.getRepo(getApplication());
         ActivityLoginBinding loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(loginBinding.getRoot());
+        String usernameFromRegister = getIntent().getStringExtra(USERNAME_REGISTERD);
+        loginBinding.editTextTextEmailAddress.setText(usernameFromRegister);
         loginBinding.loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -33,6 +37,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (!checkLogin(Username)){
                     Toast.makeText(getApplicationContext(), "Username does not exist", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        loginBinding.button2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = intentFactory.createIntent(getApplicationContext(),CreateUserActivity.class);
+                startActivity(i);
             }
         });
     }
