@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
@@ -22,7 +21,7 @@ import java.util.concurrent.Executors;
 
 //Deleting the 1 will erase the entire database!!!!
 @TypeConverters(LocalDateTypeConverter.class)
-@Database(entities = {Login.class, User.class},version = 2, exportSchema = false)
+@Database(entities = {Login.class, User.class},version = 1, exportSchema = false)
 public abstract class LoginDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME= "login_database";
@@ -67,10 +66,6 @@ public abstract class LoginDatabase extends RoomDatabase {
                     User testUser1= new User("testuser1", "testuser1");
                     dao.insert(testUser1);
                         });
-
-                //LoginDAO dao = INSTANCE.loginDao(); // Ensure you can access dao here or find an alternative approach
-                //dao.insert(new Login("defaultUser", "defaultPass"));
-                //Log.i(MainActivity.TAG, "Database created and default user added");
             });
         }
     };

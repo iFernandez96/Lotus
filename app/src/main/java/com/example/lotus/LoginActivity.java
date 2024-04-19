@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private  boolean checkLogin(String username){
-        if (repository.getUserByUsername(username)){
+        if (repository.getUserByUsername(username)!=null){
             sendUserToLandingPage(username);
             return true;
         } else {
