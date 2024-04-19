@@ -20,6 +20,7 @@ public class LandingPage extends AppCompatActivity {
         setContentView(landingPageBinding.getRoot());
         username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
         landingPageBinding.usernameView.setText(username);
+        repository = LoginRepo.getRepo(getApplication());
     }
 
     private boolean checkUserExists(String username){

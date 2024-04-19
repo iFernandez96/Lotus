@@ -93,7 +93,6 @@ public class LoginRepo {
             userDao.delete(user);
         });
     }
-
     public User getUserByUsername(String username){
         Future<User> future = LoginDatabase.databaseWriteExecutor.submit(
                 new Callable<User>() {
@@ -110,4 +109,5 @@ public class LoginRepo {
         }
         return null;
     }
+
 }
