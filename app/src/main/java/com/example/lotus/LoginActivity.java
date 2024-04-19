@@ -9,7 +9,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
-import com.example.lotus.databinding.ActivityCreateUserBinding;
 import com.example.lotus.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
@@ -37,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-        loginBinding.button2.setOnClickListener(new View.OnClickListener(){
+        loginBinding.registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent i = intentFactory.createIntent(getApplicationContext(),CreateUserActivity.class);

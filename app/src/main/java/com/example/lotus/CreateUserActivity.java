@@ -2,6 +2,7 @@ package com.example.lotus;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -29,18 +30,23 @@ public class CreateUserActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Button button = findViewById(R.id.button2);
         ActivityCreateUserBinding binding = ActivityCreateUserBinding.inflate(getLayoutInflater());
-        button.setOnClickListener(v->{
-            username = binding.editTextTextEmailAddress2.getText().toString();
-            password = binding.editTextTextPassword2.getText().toString();
-            if(VerifyLogin.checkUserExists(repository,username)) {
-              Toast.makeText(this, "Account Already exist",Toast.LENGTH_SHORT).show();
-            }else{
-              Toast.makeText(this, "Successful Creation of Username",Toast.LENGTH_SHORT).show();
-              Intent i = intentFactory.createIntent(getApplicationContext(), LoginActivity.class);
-              i.putExtra(Constants.USERNAME_REGISTERD, username);
-              startActivity(i);
+        setContentView(binding.getRoot());
+        Button button = binding.registerButton;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                username = binding.editTextTextEmailAddress2.getText().toString();
+                password = binding.editTextTextPassword2.getText().toString();
+
+                if(VerifyLogin.checkUserExists(repository,username)) {
+                    Toast.makeText(getApplicationContext(), "Account Already exist",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Successful Creation of Username: " + username,Toast.LENGTH_SHORT).show();
+                    Intent i = intentFactory.createIntent(getApplicationContext(), LoginActivity.class);
+                    i.putExtra(Constants.USERNAME_REGISTERD, username);
+                    startActivity(i);
+                }
         }
         });
     }
