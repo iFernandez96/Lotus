@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/appbackground3"
+        android:background="@drawable/appbackgournd2"
         tools:layout_editor_absoluteX="-16dp"
         tools:layout_editor_absoluteY="-56dp">
     </RelativeLayout>
@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:ems="10"
-        android:background="@drawable/edit_text_background"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
