@@ -18,10 +18,8 @@ public class LandingPage extends AppCompatActivity {
         setContentView(R.layout.activity_landing_page);
         ActivityLandingPageBinding landingPageBinding = ActivityLandingPageBinding.inflate(getLayoutInflater());
         setContentView(landingPageBinding.getRoot());
-        String getUserFromRegister = getIntent().getStringExtra(Constants.USERNAME_REGISTERD);
-        landingPageBinding.usernameView.setText(getUserFromRegister);
-        repository = LoginRepo.getRepo(getApplication());
-        username = getIntent().getStringExtra(LOGIN_ACTIVITY_KEY);
+        username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
+        landingPageBinding.usernameView.setText(username);
     }
 
     private boolean checkUserExists(String username){

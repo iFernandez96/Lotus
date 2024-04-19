@@ -16,13 +16,18 @@
 
         <TextView
             android:id="@+id/usernameView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="190dp"
-            android:layout_marginBottom="435dp"
-            android:text="" />
+            android:layout_marginStart="102dp"
+            android:layout_marginEnd="109dp"
+            android:layout_marginBottom="434dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="Name" />
 
         <Button
             android:id="@+id/Logout_button"
