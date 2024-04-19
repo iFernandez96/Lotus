@@ -2,6 +2,7 @@ package com.example.lotus;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +25,11 @@ public class CreateUserActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_user);
         repository = LoginRepo.getRepo(getApplication());
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Button button = findViewById(R.id.button2);
 
     }
 
