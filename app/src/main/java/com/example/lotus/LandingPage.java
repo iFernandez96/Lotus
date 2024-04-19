@@ -1,8 +1,11 @@
 package com.example.lotus;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
@@ -21,8 +24,33 @@ public class LandingPage extends AppCompatActivity {
         username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
         landingPageBinding.usernameView.setText(username);
         repository = LoginRepo.getRepo(getApplication());
+        Button button = landingPageBinding.LogoutButton;
+        button.setOnClickListener(View v);
+    }
+    private void showLogoutDialogue(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(LandingPage.this);
+        final AlertDialog alertTalk = alert.create();
+
+        alert.setTitle("Logout?");
+
+        alert.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logout();
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertTalk.dismiss();
+            }
+        });
+        alert.create().show();
     }
 
+    private void logout(){
+        startActivity(intentFactory.createIntent(getApplicationContext(),LoginActivity.class));
+    }
     private boolean checkUserExists(String username){
         return repository.getUserByUsername(username) != null;
     }

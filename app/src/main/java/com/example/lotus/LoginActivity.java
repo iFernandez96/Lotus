@@ -1,11 +1,13 @@
 package com.example.lotus;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
@@ -44,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
     private void sendUserToLandingPage(String username){
         Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
         intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
