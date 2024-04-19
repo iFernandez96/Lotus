@@ -13,6 +13,7 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private Integer userID;
 
     private boolean isAdmin;
 
@@ -27,12 +28,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && isAdmin == user.isAdmin && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return id == user.id && isAdmin == user.isAdmin && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(userID, user.userID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, isAdmin);
+        return Objects.hash(id, username, password, userID, isAdmin);
     }
 
     public int getId() {
@@ -66,4 +67,13 @@ public class User {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
+
+    public Integer getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
 }

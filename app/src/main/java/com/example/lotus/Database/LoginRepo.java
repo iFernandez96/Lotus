@@ -94,7 +94,7 @@ public class LoginRepo {
         });
     }
 
-    public boolean getUserByUsername(String username){
+    public User getUserByUsername(String username){
         Future<User> future = LoginDatabase.databaseWriteExecutor.submit(
                 new Callable<User>() {
                     @Override
@@ -104,10 +104,10 @@ public class LoginRepo {
                 }
         );
         try {
-            future.get();
+            return future.get();
         } catch (InterruptedException | ExecutionException e) {
             Log.i(MainActivity.TAG, "Problem with getting all User from loginDao in the repo");
         }
-        return false;
+        return null;
     }
 }
