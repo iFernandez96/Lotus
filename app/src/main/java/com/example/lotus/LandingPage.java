@@ -1,11 +1,13 @@
 package com.example.lotus;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
+import com.example.lotus.databinding.ActivityLandingPageBinding;
 
 public class LandingPage extends AppCompatActivity {
     private static final String LOGIN_ACTIVITY_KEY = "LOGIN";
@@ -18,6 +20,8 @@ public class LandingPage extends AppCompatActivity {
         setContentView(R.layout.activity_landing_page);
         repository = LoginRepo.getRepo(getApplication());
         username = getIntent().getStringExtra(LOGIN_ACTIVITY_KEY);
+
+
     }
 
     private boolean checkUserExists(String username){
