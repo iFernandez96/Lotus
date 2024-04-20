@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
             sendUserToLandingPage(user);
         } else {
             Toast.makeText(this, "Username does not exist", Toast.LENGTH_SHORT).show();
-            return false;
         }
     }
     public void saveLoginSession(Context context, User user) {

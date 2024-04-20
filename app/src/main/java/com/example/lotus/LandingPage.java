@@ -1,6 +1,8 @@
 package com.example.lotus;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
+import com.example.lotus.Database.entities.User;
 import com.example.lotus.databinding.ActivityLandingPageBinding;
 
 public class LandingPage extends AppCompatActivity {
@@ -55,10 +58,17 @@ public class LandingPage extends AppCompatActivity {
     }
 
     private void logout(){
+        exitLoginSession(getApplicationContext());
         startActivity(intentFactory.createIntent(getApplicationContext(),LoginActivity.class));
     }
     private boolean checkUserExists(String username){
         return repository.getUserByUsername(username) != null;
+    }
+    public void exitLoginSession(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("isLoggedIn", false);
+        editor.apply();
     }
 
     @Override
