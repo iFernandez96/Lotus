@@ -28,6 +28,11 @@ public class LandingPage extends AppCompatActivity {
         username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
         landingPageBinding.usernameView.setText(username);
         repository = LoginRepo.getRepo(getApplication());
+        User user = repository.getUserByUsername(username);
+        if (user != null) {
+            landingPageBinding.usernameView.setText(username);
+            landingPageBinding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
+        }
         Button button = landingPageBinding.LogoutButton;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
