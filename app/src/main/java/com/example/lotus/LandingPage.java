@@ -2,6 +2,7 @@ package com.example.lotus;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -25,7 +26,12 @@ public class LandingPage extends AppCompatActivity {
         landingPageBinding.usernameView.setText(username);
         repository = LoginRepo.getRepo(getApplication());
         Button button = landingPageBinding.LogoutButton;
-        button.setOnClickListener(View v);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
     }
     private void showLogoutDialogue(){
         AlertDialog.Builder alert = new AlertDialog.Builder(LandingPage.this);
