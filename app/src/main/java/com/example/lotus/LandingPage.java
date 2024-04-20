@@ -37,7 +37,7 @@ public class LandingPage extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                showLogoutDialogue();
             }
         });
     }
