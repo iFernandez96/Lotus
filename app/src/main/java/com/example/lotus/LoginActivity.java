@@ -1,7 +1,9 @@
 package com.example.lotus;
 
 import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -11,12 +13,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
+import com.example.lotus.Database.entities.User;
 import com.example.lotus.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
     private String Username;
     private String Password;
     private LoginRepo repository;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +37,8 @@ public class LoginActivity extends AppCompatActivity {
                 Username = loginBinding.editTextTextEmailAddress.getText().toString();
                 Password = loginBinding.editTextTextPassword.getText().toString();
                 Toast.makeText(getApplicationContext(),"Login check " + Username + " Password = " + Password, Toast.LENGTH_SHORT).show();
-                if (!checkLogin(Username)){
-                    Toast.makeText(getApplicationContext(), "Username does not exist", Toast.LENGTH_SHORT).show();
-                }
+                user = repository.getUserByUsername(Username);
+                checkLogin(user);
             }
         });
         loginBinding.registerButton.setOnClickListener(new View.OnClickListener(){
@@ -46,19 +49,29 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private void sendUserToLandingPage(String username){
+
+    private void sendUserToLandingPage(User user){
+        saveLoginSession(getApplicationContext(), user);
         Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
-        intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
+        intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, user.getUsername());
         startActivity(intent);
     }
 
-    private boolean checkLogin(String username){
-        if (repository.getUserByUsername(username)!=null){
-            sendUserToLandingPage(username);
-            return true;
+    private void checkLogin(User user){
+        if (user != null){
+            sendUserToLandingPage(user);
         } else {
             Toast.makeText(this, "Username does not exist", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+    public void saveLoginSession(Context context, User user) {
+        SharedPreferences prefs = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("isLoggedIn", true);
+        editor.putString("username", user.getUsername());
+        // We can encrypt the password or better yet store an authentication token instead of raw details
+        editor.putString("password", user.getPassword());
+        editor.apply();
     }
 }
