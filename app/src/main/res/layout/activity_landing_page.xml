@@ -13,17 +13,30 @@
         android:background="@drawable/appbackgournd2"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="64dp">
+
+        <Button
+            android:id="@+id/isAdmin"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="100dp"
+            android:text="@string/adminbutton" />
     </RelativeLayout>
-    <TextView
-        android:id="@+id/isAdmin"
-        android:layout_width="300dp"
-        android:layout_height="25dp"
-        android:text="IsAdmin"
-        app:layout_constraintBottom_toTopOf="@+id/usernameView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.525" />
+<!--    <TextView-->
+<!--        android:id="@+id/isAdmin"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        android:text="IsAdmin"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/usernameView"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.525" />-->
+
     <TextView
         android:id="@+id/usernameView"
         android:layout_width="300dp"
@@ -53,7 +66,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/black"
         android:fontFamily="@font/vast_shadow"
-        android:text="Logout"
+        android:text="@string/logout"
         app:backgroundTint="@color/black"
         app:layout_constraintTop_toBottomOf="@id/usernameView"
         android:layout_marginTop="50dp"
