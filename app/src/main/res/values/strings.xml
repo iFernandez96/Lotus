@@ -9,4 +9,6 @@
     <string name="email">email</string>
     <string name="password">Password</string>
     <string name="create_user">Create User</string>
+    <string name="adminbutton">AdminButton</string>
+    <string name="logout">Logout</string>
 </resources>
