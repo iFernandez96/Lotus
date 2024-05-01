@@ -1,18 +1,22 @@
 package com.example.lotus;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceFragmentCompat;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
+import android.provider.Settings;
 
 import com.example.lotus.Database.LoginRepo;
 import com.example.lotus.Database.entities.User;
@@ -26,11 +30,9 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
-        // Initialize repository and username
         repository = LoginRepo.getRepo(getApplication());
         username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
 
-        // Set up logout button click listener
         Button logoutButton = findViewById(R.id.Logout_button);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,18 +40,31 @@ public class SettingsActivity extends AppCompatActivity {
                 showLogoutDialogue();
             }
         });
-        /*
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.my_container, new SettingsFragment())
-                    .commit();
-        }
-        */
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        Switch switchEnableNotifications = findViewById(R.id.switch_enable_notifications);
+        switchEnableNotifications.setChecked(NotificationManagerCompat.from(this).areNotificationsEnabled());
+
+        switchEnableNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!NotificationManagerCompat.from(SettingsActivity.this).areNotificationsEnabled()) {
+                    // Show dialog to explain why notifications need to be enabled
+                    showExplanationDialog();
+                }
+            }
+        });
+    }
+
+    private void requestNotificationPermission() {
+        Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        startActivity(intent);
     }
 
     private void logout() {
@@ -64,11 +79,42 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void sendUserToLogIn(User user) {
-        exitLoginSession(getApplicationContext());
-        Intent intent = intentFactory.createIntent(getApplicationContext(), LoginActivity.class);
-        intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, user.getUsername());
-        startActivity(intent);
+    private void showExplanationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Notification Permission Needed")
+                .setMessage("This app needs notification permissions to send you important alerts. Please enable them in the settings.")
+                .setPositiveButton("Settings", (dialog, which) -> requestNotificationPermission())
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                    // Reset the switch to reflect the current state without triggering the listener
+                    Switch switchEnableNotifications = findViewById(R.id.switch_enable_notifications);
+                    switchEnableNotifications.setOnCheckedChangeListener(null);  // Temporarily remove listener
+                    switchEnableNotifications.setChecked(NotificationManagerCompat.from(SettingsActivity.this).areNotificationsEnabled());
+                    // Reattach the listener
+                    switchEnableNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked && !NotificationManagerCompat.from(SettingsActivity.this).areNotificationsEnabled()) {
+                                showExplanationDialog();  // Only show dialog if enabled again
+                            }
+                        }
+                    });
+                })
+                .create()
+                .show();
+    }
+
+    private void showLogoutDialogue() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(SettingsActivity.this);
+        alert.setTitle("Logout?");
+        alert.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logout();
+            }
+        });
+        alert.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        alert.create().show();
     }
 
     public void exitLoginSession(Context context) {
@@ -76,30 +122,5 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("isLoggedIn", false);
         editor.apply();
-    }
-
-    private void showLogoutDialogue() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(SettingsActivity.this);
-        final AlertDialog alertTalk = alert.create();
-
-        alert.setTitle("Logout?");
-
-        alert.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                logout();
-            }
-        });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                alertTalk.dismiss();
-            }
-        });
-        alert.create().show();
-    }
-
-    private boolean checkUserExists(String username) {
-        return repository.getUserByUsername(username) != null;
     }
 }
