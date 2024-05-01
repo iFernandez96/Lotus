@@ -34,7 +34,6 @@ public class LandingPage extends AppCompatActivity {
             landingPageBinding.usernameView.setText(username);
             landingPageBinding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
         }
-        Button button = landingPageBinding.LogoutButton;
         Button settingsButton = landingPageBinding.settingsButton;
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -44,48 +43,12 @@ public class LandingPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLogoutDialogue();
-            }
-        });
-    }
-    private void showLogoutDialogue(){
-        AlertDialog.Builder alert = new AlertDialog.Builder(LandingPage.this);
-        final AlertDialog alertTalk = alert.create();
-
-        alert.setTitle("Logout?");
-
-        alert.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                logout();
-            }
-        });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                alertTalk.dismiss();
-            }
-        });
-        alert.create().show();
     }
 
-    private void logout(){
-        exitLoginSession(getApplicationContext());
-        startActivity(intentFactory.createIntent(getApplicationContext(),LoginActivity.class));
-    }
+
     private boolean checkUserExists(String username){
         return repository.getUserByUsername(username) != null;
     }
-    public void exitLoginSession(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("isLoggedIn", false);
-        editor.apply();
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
