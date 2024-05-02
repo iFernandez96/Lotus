@@ -31,7 +31,7 @@ public class LandingPage extends AppCompatActivity {
     /**
      * Check if the user exists in the database
      * @param username
-     * @return
+     * @return true if the user exists, false otherwise
      */
     private boolean checkUserExists(String username){
         return repository.getUserByUsername(username) != null;
