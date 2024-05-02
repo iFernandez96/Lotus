@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -42,6 +43,15 @@ public class LandingPage extends AppCompatActivity {
         playSound(R.raw.autooff);
 
          */
+        ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
+        
+        lotusHeadTrackingbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LandingPage.this, Lotus_Head_Tracking.class);
+            }
+        });
+
         Button settingsButton = landingPageBinding.settingsButton;
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
