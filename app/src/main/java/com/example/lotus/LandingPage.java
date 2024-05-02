@@ -1,9 +1,6 @@
 package com.example.lotus;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
@@ -22,7 +18,7 @@ import com.example.lotus.databinding.ActivityLandingPageBinding;
 public class LandingPage extends AppCompatActivity {
     private LoginRepo repository;
     private String username;
-    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +29,7 @@ public class LandingPage extends AppCompatActivity {
         username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
         landingPageBinding.usernameView.setText(username);
         repository = LoginRepo.getRepo(getApplication());
+        assert repository != null;
         User user = repository.getUserByUsername(username);
         if (user != null) {
             landingPageBinding.usernameView.setText(username);
@@ -81,7 +78,7 @@ public class LandingPage extends AppCompatActivity {
     }
 
     private void playSound(int soundResourceId) {
-        mediaPlayer = MediaPlayer.create(this, soundResourceId);
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, soundResourceId);
         if (mediaPlayer != null) {
             mediaPlayer.start();
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
