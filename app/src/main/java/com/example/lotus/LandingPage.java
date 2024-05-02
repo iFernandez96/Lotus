@@ -35,19 +35,13 @@ public class LandingPage extends AppCompatActivity {
             landingPageBinding.usernameView.setText(username);
             landingPageBinding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
         }
-
-        /*
-
-        playSound(R.raw.autooff);
-
-         */
         ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
 
         lotusHeadTrackingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LandingPage.this, Lotus_Head_Tracking.class);
-                startActivity(i);
+                LotusHeadTracking lotusHeadTracking = new LotusHeadTracking(LandingPage.this);
+                lotusHeadTracking.
                 playSound(R.raw.autooff);
             }
         });
