@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -50,6 +51,7 @@ public class LandingPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(LandingPage.this, Lotus_Head_Tracking.class);
                 startActivity(i);
+                playSound(R.raw.autooff);
             }
         });
 
@@ -78,11 +80,20 @@ public class LandingPage extends AppCompatActivity {
 
     }
 
-    private void playSound(int soundResourceId){
-
-        mediaPlayer = MediaPlayer.create(this,soundResourceId);
-        mediaPlayer.start();
-
-        //mediaPlayer.setOnCompletionListener();
+    private void playSound(int soundResourceId) {
+        mediaPlayer = MediaPlayer.create(this, soundResourceId);
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
+        } else {
+            // Handle error: MediaPlayer creation failed
+            Log.e("MediaPlayer", "Could not create MediaPlayer for resource ID: " + soundResourceId);
+        }
     }
+
 }
