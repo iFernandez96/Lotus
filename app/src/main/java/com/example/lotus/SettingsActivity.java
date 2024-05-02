@@ -58,14 +58,17 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
+
         repository = LoginRepo.getRepo(getApplication());
+        assert repository != null;
+
         username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
         User user = repository.getUserByUsername(username);
 
         // Find the admin feature button by its ID
         Button adminFeatureButton = findViewById(R.id.deleteUser);
 
-        // Set the visibility based on whether the user is an admin
+        //Set the visibility based on whether the user is an admin
         if (user != null && user.isAdmin()) {
             adminFeatureButton.setVisibility(View.VISIBLE);
         } else {

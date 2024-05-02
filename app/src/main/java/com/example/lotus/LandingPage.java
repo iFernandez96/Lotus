@@ -44,14 +44,16 @@ public class LandingPage extends AppCompatActivity {
 
         ActivityLandingPageBinding landingPageBinding = ActivityLandingPageBinding.inflate(getLayoutInflater());
         setContentView(landingPageBinding.getRoot());
+
+        repository = LoginRepo.getRepo(getApplication());
+        assert repository != null;
+
         username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
         if (!checkUserExists(username)){
             finish();
         }
         landingPageBinding.usernameView.setText(username);
 
-        repository = LoginRepo.getRepo(getApplication());
-        assert repository != null;
 
         User user = repository.getUserByUsername(username);
         if (user != null) {
