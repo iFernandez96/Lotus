@@ -6,25 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="?attr/actionBarSize">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/appbackgournd2"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="64dp">
+        tools:layout_editor_absoluteY="32dp">
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="169dp"
-            android:layout_marginBottom="498dp"
-            android:background="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/lotus_button_start_head_tracking" />
 
         <TextView
             android:id="@+id/isAdmin"
@@ -33,6 +21,20 @@
             android:text="IsAdmin" />
     </RelativeLayout>
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="56dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/lotus_button_start_head_tracking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/usernameView"

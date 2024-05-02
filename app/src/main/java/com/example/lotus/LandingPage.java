@@ -44,11 +44,12 @@ public class LandingPage extends AppCompatActivity {
 
          */
         ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
-        
+
         lotusHeadTrackingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LandingPage.this, Lotus_Head_Tracking.class);
+                startActivity(i);
             }
         });
 
