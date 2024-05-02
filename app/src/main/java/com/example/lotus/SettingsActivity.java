@@ -58,19 +58,22 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
-        repository = LoginRepo.getRepo(getApplication());
-        username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
-        User user = repository.getUserByUsername(username);
+        User currentUser = getCurrentUser();
+        Button deleteUserButton = findViewById(R.id.deleteUser);
 
-        // Find the admin feature button by its ID
-        Button adminFeatureButton = findViewById(R.id.deleteUser);
-
-        // Set the visibility based on whether the user is an admin
-        if (user != null && user.isAdmin()) {
-            adminFeatureButton.setVisibility(View.VISIBLE);
+        if (currentUser != null && currentUser.isAdmin()) {
+            deleteUserButton.setVisibility(View.VISIBLE);
         } else {
-            adminFeatureButton.setVisibility(View.GONE);
+            deleteUserButton.setVisibility(View.GONE);
         }
+
+        // Optionally, handle the delete user button click
+        deleteUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Confirm and delete user logic here
+            }
+        });
     }
 
     private void requestNotificationPermission() {
@@ -135,5 +138,19 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("isLoggedIn", false);
         editor.apply();
+    }
+    private User getCurrentUser() {
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String username = prefs.getString("username", null);
+        boolean isAdmin = prefs.getBoolean("isAdmin", false);
+
+        if (username == null) {
+            return null;
+        }
+
+        User currentUser = new User();
+        currentUser.setUsername(username);
+        currentUser.setAdmin(isAdmin);
+        return currentUser;
     }
 }

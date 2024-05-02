@@ -124,5 +124,6 @@
         android:shadowColor="@color/black"
         android:text="Delete User"
         android:textColor="@android:color/white"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        />
 </LinearLayout>
