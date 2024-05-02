@@ -18,31 +18,61 @@ import com.example.lotus.databinding.ActivityLandingPageBinding;
 public class LandingPage extends AppCompatActivity {
     private LoginRepo repository;
     private String username;
+    private boolean isTracking = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_landing_page);
+    }
+
+
+    /**
+     * Check if the user exists in the database
+     * @param username
+     * @return
+     */
+    private boolean checkUserExists(String username){
+        return repository.getUserByUsername(username) != null;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EdgeToEdge.enable(this);
+
         ActivityLandingPageBinding landingPageBinding = ActivityLandingPageBinding.inflate(getLayoutInflater());
         setContentView(landingPageBinding.getRoot());
         username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
+        if (!checkUserExists(username)){
+            finish();
+        }
         landingPageBinding.usernameView.setText(username);
+
         repository = LoginRepo.getRepo(getApplication());
         assert repository != null;
+
         User user = repository.getUserByUsername(username);
         if (user != null) {
             landingPageBinding.usernameView.setText(username);
             landingPageBinding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
         }
-        ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
 
+        ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
+        LotusHeadTracking lotusHeadTracking = new LotusHeadTracking(getApplicationContext());
         lotusHeadTrackingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LotusHeadTracking lotusHeadTracking = new LotusHeadTracking(LandingPage.this);
-
-                playSound(R.raw.autooff);
+                isTracking = !isTracking;
+                if (isTracking) {
+                    //TODO: Add autoon sound
+                    //playSound(R.raw.autoon);
+                    lotusHeadTracking.startTracking();
+                } else {
+                    playSound(R.raw.autooff);
+                    lotusHeadTracking.stopTracking();
+                }
             }
         });
 
@@ -55,19 +85,8 @@ public class LandingPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-
-    private boolean checkUserExists(String username){
-        return repository.getUserByUsername(username) != null;
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EdgeToEdge.enable(this);
-        if (!checkUserExists(username)){
-            finish();
-        }
+        // Done with basic startup tasks
 
     }
 

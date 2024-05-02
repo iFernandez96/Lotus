@@ -13,7 +13,6 @@ public class Tracker implements SensorEventListener {
 
     public Tracker(Context context) {
         this.context = context;
-        initializeSensors();
     }
 
     public void startTracking() {
@@ -26,29 +25,35 @@ public class Tracker implements SensorEventListener {
 
 
     private float[] quaternionToEuler(float[] quaternion) {
-        // Assuming quaternion = {w, x, y, z}
+        // quaternions = {w, x, y, z}
         float w = quaternion[0];
         float x = quaternion[1];
         float y = quaternion[2];
         float z = quaternion[3];
 
-        float t0 = +2.0f * (w * x + y * z);
-        float t1 = +1.0f - 2.0f * (x * x + y * y);
+        float t0 = 2.0f * (w * x + y * z);
+        float t1 = 1.0f - 2.0f * (x * x + y * y);
         float roll = (float) Math.atan2(t0, t1);
 
-        t0 = +2.0f * (w * y - z * x);
+        t0 = 2.0f * (w * y - z * x);
         t0 = Math.min(t0, +1.0f);
         t0 = Math.max(t0, -1.0f);
         float pitch = (float) Math.asin(t0);
 
-        t0 = +2.0f * (w * z + x * y);
-        t1 = +1.0f - 2.0f * (y * y + z * z);
+        t0 = 2.0f * (w * z + x * y);
+        t1 = 1.0f - 2.0f * (y * y + z * z);
         float yaw = (float) Math.atan2(t0, t1);
 
-        return new float[] {roll, pitch, yaw}; // Euler angles in radians
+        // Convert radians to degrees
+        roll = (float) Math.toDegrees(roll);
+        pitch = (float) Math.toDegrees(pitch);
+        yaw = (float) Math.toDegrees(yaw);
+
+        return new float[] {roll, pitch, yaw}; // Euler angles in degrees
     }
 
-    private void initializeSensors() {
+
+    void initializeSensors() {
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         Sensor rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
@@ -67,6 +72,7 @@ public class Tracker implements SensorEventListener {
             float roll = euler[0];
             float pitch = euler[1];
             float yaw = euler[2];
+
 
         }
     }
