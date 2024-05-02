@@ -41,7 +41,7 @@ public class LandingPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 LotusHeadTracking lotusHeadTracking = new LotusHeadTracking(LandingPage.this);
-                lotusHeadTracking.
+
                 playSound(R.raw.autooff);
             }
         });
