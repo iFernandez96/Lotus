@@ -22,6 +22,5 @@ public class Lotus_Head_Tracking extends AppCompatActivity {
             return insets;
         });
 
-        Button lotus_head_tracking_button = findViewById(R.id.imageButton);
     }
 }
