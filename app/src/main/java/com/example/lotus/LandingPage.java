@@ -68,8 +68,7 @@ public class LandingPage extends AppCompatActivity {
             public void onClick(View v) {
                 isTracking = !isTracking;
                 if (isTracking) {
-                    //TODO: Add autoon sound
-                    //playSound(R.raw.autoon);
+                    playSound(R.raw.autoon);
                     lotusHeadTracking.startTracking();
                 } else {
                     playSound(R.raw.autooff);
