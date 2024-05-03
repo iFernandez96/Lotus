@@ -1,9 +1,11 @@
 package com.example.lotus;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,6 +13,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -29,6 +32,7 @@ public class Tracker implements SensorEventListener {
     public void stopTracking() {
         isTracking = false;
     }
+
     //float past_roll = 0;
     //float past_pitch =0;
     //float past_yaw=0;
@@ -59,7 +63,7 @@ public class Tracker implements SensorEventListener {
         pitch = (float) Math.toDegrees(pitch);
         yaw = (float) Math.toDegrees(yaw);
 
-        return new float[] {roll, pitch, yaw}; // Euler angles in degrees
+        return new float[]{roll, pitch, yaw}; // Euler angles in degrees
     }
 
 
@@ -74,6 +78,7 @@ public class Tracker implements SensorEventListener {
             sensorManager.registerListener(this, rotationVectorSensor, SensorManager.SENSOR_DELAY_FASTEST);
         }
     }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR && isTracking) {
@@ -106,13 +111,13 @@ public class Tracker implements SensorEventListener {
             //}
             //diff = Math.abs(past_yaw-yaw);
 
-            if(yaw<85 && !passed_threshold){
+            if (yaw < 85 && !passed_threshold) {
                 passed_threshold = true;
                 showHeadDipNotification();
-                Toast.makeText(context,"Passed the 85 degree yaw threshold" + yaw,Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Passed the 85 degree yaw threshold" + yaw, Toast.LENGTH_SHORT).show();
             }
 
-            if(yaw>85 && passed_threshold){
+            if (yaw > 85 && passed_threshold) {
                 passed_threshold = false;
             }
             //diff = Math.abs(past_pitch-pitch);
@@ -122,6 +127,7 @@ public class Tracker implements SensorEventListener {
             //}
         }
     }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         if (sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
@@ -143,17 +149,16 @@ public class Tracker implements SensorEventListener {
             }
         }
     }
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Head Dip Channel";
-            String description = "Channel for head dip notifications";
-            int importance = NotificationManager.IMPORTANCE_HIGH; // Changed to IMPORTANCE_HIGH
-            NotificationChannel channel = new NotificationChannel("head_dip_channel", name, importance);
-            channel.setDescription(description);
 
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+    private void createNotificationChannel() {
+        CharSequence name = "Head Dip Channel";
+        String description = "Channel for head dip notifications";
+        int importance = NotificationManager.IMPORTANCE_HIGH; // Changed to IMPORTANCE_HIGH
+        NotificationChannel channel = new NotificationChannel("head_dip_channel", name, importance);
+        channel.setDescription(description);
+
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
     private void showHeadDipNotification() {
@@ -164,6 +169,12 @@ public class Tracker implements SensorEventListener {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // Request the missing permissions
+            ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+            return;
+        }
         notificationManager.notify(1, builder.build());
     }
 }
