@@ -1,77 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/background9"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@drawable/background9"
     android:padding="16dp">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile Settings"
-        android:textSize="24sp"
-        android:gravity="center"
-        android:marginBottom="20dp" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your name"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Profile Settings"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:marginBottom="20dp" />
 
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your email"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"/>
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User Name Displayed Here"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"/>
 
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your password"
-        android:inputType="textPassword"
-        android:minHeight="48dp"/>
+        <!-- Additional settings for user profile -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-    <!-- Example buttons with appropriate touch target sizes -->
-    <Button
-        android:id="@+id/buttonUpdateProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Update Profile"
-        android:backgroundTint="@color/black"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Preferences"
+                android:textSize="20sp"
+                android:marginBottom="10dp"/>
 
-    <Button
-        android:id="@+id/Logout_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/vast_shadow"
-        android:text="Logout"
-        android:textColor="@android:color/white"/>
+            <CheckBox
+                android:id="@+id/chk_box_email_notifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email Notifications"
+                android:checked="true"/>
 
-    <Button
-        android:id="@+id/deleteUser"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/vast_shadow"
-        android:shadowColor="@color/black"
-        android:text="@string/delete_user"
-        android:textColor="@android:color/white"
-        android:visibility="gone"/>
+            <CheckBox
+                android:id="@+id/chk_box_push_notifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Push Notifications"
+                android:checked="false"/>
 
-</LinearLayout>
+            <CheckBox
+                android:id="@+id/chk_box_newsletter_sub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Subscribe to Newsletter"
+                android:checked="false"/>
+
+            <!-- Profile visibility setting -->
+            <TextView
+                android:text="Profile Visibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:marginTop="20dp"/>
+
+            <RadioGroup
+                android:id="@+id/radio_group_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radio_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Public"
+                    android:checked="true"/>
+                <RadioButton
+                    android:id="@+id/radio_private"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Private"/>
+            </RadioGroup>
+
+            <!-- Customization options -->
+            <TextView
+                android:text="Profile Theme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:marginTop="20dp"/>
+
+
+
+        </LinearLayout>
+
+        <!-- Action buttons -->
+        <Button
+            android:id="@+id/buttonUpdatePreferences"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Update Preferences"
+            android:backgroundTint="@color/black"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/Logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/black"
+            android:fontFamily="@font/vast_shadow"
+            android:text="Logout"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/deleteUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/black"
+            android:fontFamily="@font/vast_shadow"
+            android:text="@string/delete_user"
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+</ScrollView>
