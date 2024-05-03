@@ -15,16 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.lotus.databinding.ActivityProfileBinding;
 
 public class ProfileActivity extends AppCompatActivity {
-    private TextView profileName;
-    private CheckBox emailNotifications;
-    private CheckBox pushNotifications;
-    private CheckBox newsletterSub;
-    private RadioGroup visibilityGroup;
-    private RadioButton publicButton;
-    private RadioButton privateButton;
-    private Button updatePreferences;
-    private Button logoutButton;
-    private Button deleteUserButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
