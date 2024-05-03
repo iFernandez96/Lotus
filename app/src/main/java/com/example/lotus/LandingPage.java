@@ -1,5 +1,6 @@
 package com.example.lotus;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -62,7 +63,7 @@ public class LandingPage extends AppCompatActivity {
         }
 
         ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
-        LotusHeadTracking lotusHeadTracking = new LotusHeadTracking(getApplicationContext());
+        LotusHeadTracking lotusHeadTracking = new LotusHeadTracking(getApplicationContext(), this);
         lotusHeadTrackingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
