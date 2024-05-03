@@ -1,12 +1,18 @@
 package com.example.lotus;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 public class Tracker implements SensorEventListener {
     private final Context context;
@@ -58,6 +64,7 @@ public class Tracker implements SensorEventListener {
 
 
     void initializeSensors() {
+        createNotificationChannel();
         SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         Sensor rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
@@ -101,6 +108,7 @@ public class Tracker implements SensorEventListener {
 
             if(yaw<85 && !passed_threshold){
                 passed_threshold = true;
+                showHeadDipNotification();
                 Toast.makeText(context,"Passed the 85 degree yaw threshold" + yaw,Toast.LENGTH_SHORT).show();
             }
 
@@ -134,5 +142,28 @@ public class Tracker implements SensorEventListener {
                     throw new IllegalStateException("Unexpected value: " + accuracy);
             }
         }
+    }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Head Dip Channel";
+            String description = "Channel for head dip notifications";
+            int importance = NotificationManager.IMPORTANCE_HIGH; // Changed to IMPORTANCE_HIGH
+            NotificationChannel channel = new NotificationChannel("head_dip_channel", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void showHeadDipNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "head_dip_channel")
+                .setSmallIcon(R.drawable.hunchicon1)
+                .setContentTitle("Head Dip Detected")
+                .setContentText("You dipped your head below the threshold.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(1, builder.build());
     }
 }
