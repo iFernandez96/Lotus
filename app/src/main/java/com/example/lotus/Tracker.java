@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -20,9 +18,11 @@ import androidx.core.app.NotificationManagerCompat;
 public class Tracker implements SensorEventListener {
     private final Context context;
     boolean isTracking = false;
+    private final Activity activity;
 
-    public Tracker(Context context) {
+    public Tracker(Context context, Activity activity) {
         this.context = context;
+        this.activity = activity;
     }
 
     public void startTracking() {
@@ -162,19 +162,22 @@ public class Tracker implements SensorEventListener {
     }
 
     private void showHeadDipNotification() {
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "head_dip_channel")
                 .setSmallIcon(R.drawable.hunchicon1)
                 .setContentTitle("Head Dip Detected")
                 .setContentText("You dipped your head below the threshold.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(activity);
 
-        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // Request the missing permissions
-            ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
-            return;
+        // Check permission
+        if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // Request the missing permission from the activity
+            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+        } else {
+            // Permission already granted, show notification
+            notificationManager.notify(1, builder.build());
         }
-        notificationManager.notify(1, builder.build());
     }
 }
