@@ -1,6 +1,7 @@
 package com.example.lotus;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,7 +23,10 @@ public class Tracker implements SensorEventListener {
     public void stopTracking() {
         isTracking = false;
     }
-
+    //float past_roll = 0;
+    //float past_pitch =0;
+    //float past_yaw=0;
+    boolean passed_threshold = false;
 
     private float[] quaternionToEuler(float[] quaternion) {
         // quaternions = {w, x, y, z}
@@ -66,17 +70,50 @@ public class Tracker implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR && isTracking) {
+            float diff;
             float[] quaternion = new float[4];
-            System.arraycopy(event.values, 0, quaternion, 0, 4);
+            quaternion[0] = event.values[0]; // Assigning w
+            quaternion[1] = event.values[1]; // Assigning x
+            quaternion[2] = event.values[2]; // Assigning y
+            quaternion[3] = event.values[3]; // Assigning z
+
             float[] euler = quaternionToEuler(quaternion);
             float roll = euler[0];
             float pitch = euler[1];
             float yaw = euler[2];
 
+            /*if (past_yaw ==0){
+                past_yaw = yaw;
+            }
+            if (past_pitch ==0){
+                past_pitch = pitch;
+            }
+            if (past_roll ==0) {
+                past_roll = roll;
+            }
+            */
+            //diff = Math.abs(past_roll-roll);
+            //if (diff>90){
+            //    past_roll = roll;
+            //    Toast.makeText(context,"Passed the 90 degree roll threshold" + roll,Toast.LENGTH_SHORT).show();
+            //}
+            //diff = Math.abs(past_yaw-yaw);
 
+            if(yaw<85 && !passed_threshold){
+                passed_threshold = true;
+                Toast.makeText(context,"Passed the 85 degree yaw threshold" + yaw,Toast.LENGTH_SHORT).show();
+            }
+
+            if(yaw>85 && passed_threshold){
+                passed_threshold = false;
+            }
+            //diff = Math.abs(past_pitch-pitch);
+            //if(diff>90){
+            //    past_pitch = pitch;
+            //    Toast.makeText(context,"Passed the 90 degree pitch threshold" + pitch,Toast.LENGTH_SHORT).show();
+            //}
         }
     }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         if (sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {

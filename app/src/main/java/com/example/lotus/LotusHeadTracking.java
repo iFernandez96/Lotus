@@ -4,11 +4,11 @@ import android.content.Context;
 
 public class LotusHeadTracking {
     private final Context context; // Added to hold the Context
-    private LotusHeadTracking tracker;
 
+    private Tracker tracker;
     public LotusHeadTracking(Context context) { // Constructor to receive a Context
         this.context = context;
-        Tracker tracker = new Tracker(context);
+        tracker = new Tracker(context);
         tracker.initializeSensors();
     }
 
