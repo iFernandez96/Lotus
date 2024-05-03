@@ -14,12 +14,15 @@ public class User {
     private String username;
     private String password;
     private Integer userID;
+    private String email;
+
 
     private boolean isAdmin;
 
-    public User(String username, String password) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.password = password;
+        this.email = email;
         isAdmin = false;
     }
 
@@ -76,4 +79,11 @@ public class User {
         this.userID = userID;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

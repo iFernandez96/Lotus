@@ -17,6 +17,8 @@ public class CreateUserActivity extends AppCompatActivity {
     private String username;
     private String password;
     private LoginRepo repository;
+    private String email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +33,14 @@ public class CreateUserActivity extends AppCompatActivity {
         ActivityCreateUserBinding binding = ActivityCreateUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Button button = binding.registerButton;
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 username = binding.editTextTextEmailAddress2.getText().toString();
                 password = binding.editTextTextPassword2.getText().toString();
-
-                if (!insertUserRecord(username, password)) {
+                email = binding.editTextName.getText().toString();
+                if (!insertUserRecord(username, email, password)) {
                     return;
                 }
                 Toast.makeText(getApplicationContext(), "Successful Creation of Username: " + username,Toast.LENGTH_SHORT).show();
@@ -48,7 +51,7 @@ public class CreateUserActivity extends AppCompatActivity {
         });
     }
 
-    private boolean insertUserRecord(String Username, String Password) {
+    private boolean insertUserRecord(String Username,String Email, String Password) {
         User user = repository.getUserByUsername(Username);
         if (user!=null) {
             Toast.makeText(this, "The User already exists. Please enter a new Username", Toast.LENGTH_SHORT).show();
@@ -58,11 +61,15 @@ public class CreateUserActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid Password", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (Email.isEmpty()) {
+            Toast.makeText(this, "Please enter a valid Email", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (Username.isEmpty()) {
             Toast.makeText(this, "Please enter a valid Username", Toast.LENGTH_SHORT).show();
             return false;
         }
-        repository.insertUser2Database(new User(Username, Password));
+        repository.insertUser2Database(new User(Username, Email, Password));
         Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show();
         return true;
     }

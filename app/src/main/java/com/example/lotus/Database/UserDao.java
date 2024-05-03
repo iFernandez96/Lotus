@@ -26,4 +26,8 @@ public interface UserDao {
 
     @Query("SELECT * FROM " + LoginDatabase.USER_TABLE + " WHERE username = :username")
     User getUserByUsername(String username);
+
+    @Query("UPDATE " + LoginDatabase.USER_TABLE + " SET username = :username, email = :email, password = :password WHERE username = :username")
+    void updateUser(String username, String email, String password);
+
 }
