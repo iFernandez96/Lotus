@@ -110,4 +110,9 @@ public class LoginRepo {
         return null;
     }
 
+    public void updateUser(String name, String email, String password) {
+        LoginDatabase.databaseWriteExecutor.execute(() -> {
+            userDao.updateUser(name, email, password);
+        });
+    }
 }

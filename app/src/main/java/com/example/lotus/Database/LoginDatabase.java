@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 
 //Deleting the 1 will erase the entire database!!!!
 @TypeConverters(LocalDateTypeConverter.class)
-@Database(entities = {Login.class, User.class},version = 1, exportSchema = false)
+@Database(entities = {Login.class, User.class},version = 2, exportSchema = false)
 public abstract class LoginDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME= "loginDatabase";
@@ -59,13 +59,13 @@ public abstract class LoginDatabase extends RoomDatabase {
                 databaseWriteExecutor.execute(() ->{
                     UserDao dao = INSTANCE.userDao();
                     dao.deleteAll();
-                    User admin = new User("admin1", "admin1");
+                    User admin = new User("admin1", "admin1@admin.com", "admin1");
                     admin.setAdmin(true);
                     dao.insert(admin);
 
-                    User testUser1= new User("testuser1", "testuser1");
+                    User testUser1= new User("testuser1", "testuser1@testuser1.com", "testuser1");
                     dao.insert(testUser1);
-                        });
+                    });
             });
         }
     };
