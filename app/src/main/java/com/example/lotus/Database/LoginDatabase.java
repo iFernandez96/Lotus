@@ -11,6 +11,7 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.lotus.Database.entities.Login;
+import com.example.lotus.Database.entities.Phone;
 import com.example.lotus.Database.entities.User;
 import com.example.lotus.Database.typeConverter.LocalDateTypeConverter;
 import com.example.lotus.MainActivity;
@@ -21,12 +22,13 @@ import java.util.concurrent.Executors;
 
 //Deleting the 1 will erase the entire database!!!!
 @TypeConverters(LocalDateTypeConverter.class)
-@Database(entities = {Login.class, User.class},version = 2, exportSchema = false)
+@Database(entities = {Login.class, User.class, Phone.class},version = 2, exportSchema = false)
 public abstract class LoginDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME= "loginDatabase";
     public static final String USER_TABLE = "UserTable";
     public static final String LOGIN_TABLE = "LoginTable";
+    public static final String PHONE_TABLE = "PhoneTable";
 
     private static volatile LoginDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS =4;
@@ -71,6 +73,7 @@ public abstract class LoginDatabase extends RoomDatabase {
     };
 
     public abstract LoginDAO loginDao();
+    public abstract PhoneDAO phoneDao();
 
     public abstract UserDao userDao();
 }

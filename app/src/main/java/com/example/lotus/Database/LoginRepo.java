@@ -3,6 +3,7 @@ package com.example.lotus.Database;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.lotus.Database.entities.Phone;
 import com.example.lotus.Database.entities.User;
 import com.example.lotus.MainActivity;
 
@@ -15,6 +16,7 @@ public class LoginRepo {
     private final LoginDAO loginDAO;
     private ArrayList<User> allLogins;
     private static LoginRepo repository;
+    private final PhoneDAO phoneDAO;
 
     private final UserDao userDao;
 
@@ -22,6 +24,7 @@ public class LoginRepo {
         LoginDatabase db = LoginDatabase.getDatabase(app);
         this.loginDAO = db.loginDao();
         this.userDao = db.userDao();
+        this.phoneDAO = db.phoneDao();
         this.allLogins = (ArrayList<User>) this.userDao.getAllUsers();
     }
 
@@ -115,4 +118,121 @@ public class LoginRepo {
             userDao.updateUser(name, email, password);
         });
     }
+
+    // get a phone by the user id
+    public Phone getPhoneByUserID(int userID){
+        Future<Phone> future = LoginDatabase.databaseWriteExecutor.submit(
+                new Callable<Phone>() {
+                    @Override
+                    public Phone call() throws Exception {
+                        return phoneDAO.getPhoneByUserID(userID);
+                    }
+                }
+        );
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            Log.i(MainActivity.TAG, "Problem with getting all User from loginDao in the repo");
+        }
+        return null;
+    }
+
+    // insert the phone into the database
+    public void insertPhone(Phone... phone){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insert(phone);
+        });
+    }
+    // insert an imei number into the database
+    public void insertImeiNumber(String imei_number, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertImeiNumber(imei_number, userID);
+        });
+    }
+    // insert a model name into the database
+    public void insertModelName(String model_name, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertModelName(model_name, userID);
+        });
+    }
+    // insert a brand into the database
+    public void insertBrand(String brand, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertBrand(brand, userID);
+        });
+    }
+    // insert a firmware version into the database
+    public void insertFirmwareVersion(String firmware_version, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertFirmwareVersion(firmware_version, userID);
+        });
+    }
+    // insert an android version into the database
+    public void insertAndroidVersion(String android_version, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertAndroidVersion(android_version, userID);
+        });
+    }
+    // insert a security patch into the database
+    public void insertSecurityPatch(String security_patch, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertSecurityPatch(security_patch, userID);
+        });
+    }
+    // insert a build number into the database
+    public void insertBuildNumber(String build_number, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertBuildNumber(build_number, userID);
+        });
+    }
+    // insert a kernel version into the database
+    public void insertKernelVersion(String kernel_version, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertKernelVersion(kernel_version, userID);
+        });
+    }
+    // insert a baseband version into the database
+    public void insertBasebandVersion(String baseband_version, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertBasebandVersion(baseband_version, userID);
+        });
+    }
+    // insert a cpu into the database
+    public void insertCpu(String cpu, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertCpu(cpu, userID);
+        });
+    }
+    // insert a gpu into the database
+    public void insertGpu(String gpu, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertGpu(gpu, userID);
+        });
+    }
+    // insert a ram into the database
+    public void insertRam(String ram, int userID){
+        LoginDatabase.databaseWriteExecutor.execute(() ->
+        {
+            phoneDAO.insertRam(ram, userID);
+        });
+    }
+    // delete all the data of the user's phone
+    public void deletePhone(Phone phone){
+        LoginDatabase.databaseWriteExecutor.execute(() -> {
+            phoneDAO.delete(phone);
+        });
+    }
+
 }
