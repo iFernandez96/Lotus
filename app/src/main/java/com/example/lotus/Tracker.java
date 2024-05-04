@@ -15,6 +15,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.lotus.Database.entities.Statistics;
+
 public class Tracker implements SensorEventListener {
     private final Context context;
     boolean isTracking = false;
