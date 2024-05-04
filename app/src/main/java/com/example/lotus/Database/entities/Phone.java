@@ -19,16 +19,14 @@ public class Phone {
     private int userID;
     private String model_name;
     private String brand;
-    private String imei_number;
+
     private String firmware_version;
     private String android_version;
     private String security_patch;
     private String build_number;
     private String kernel_version;
     private String baseband_version;
-    private String cpu;
-    private String gpu;
-    private String ram;
+
 
     public int getPhoneID() {
         return phoneID;
@@ -54,13 +52,7 @@ public class Phone {
         this.brand = brand;
     }
 
-    public String getImei_number() {
-        return imei_number;
-    }
 
-    public void setImei_number(String imei_number) {
-        this.imei_number = imei_number;
-    }
 
     public String getFirmware_version() {
         return firmware_version;
@@ -110,41 +102,17 @@ public class Phone {
         this.baseband_version = baseband_version;
     }
 
-    public String getCpu() {
-        return cpu;
-    }
-
-    public void setCpu(String cpu) {
-        this.cpu = cpu;
-    }
-
-    public String getGpu() {
-        return gpu;
-    }
-
-    public void setGpu(String gpu) {
-        this.gpu = gpu;
-    }
-
-    public String getRam() {
-        return ram;
-    }
-
-    public void setRam(String ram) {
-        this.ram = ram;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Phone phone = (Phone) o;
-        return phoneID == phone.phoneID && userID == phone.userID && Objects.equals(model_name, phone.model_name) && Objects.equals(brand, phone.brand) && Objects.equals(imei_number, phone.imei_number) && Objects.equals(firmware_version, phone.firmware_version) && Objects.equals(android_version, phone.android_version) && Objects.equals(security_patch, phone.security_patch) && Objects.equals(build_number, phone.build_number) && Objects.equals(kernel_version, phone.kernel_version) && Objects.equals(baseband_version, phone.baseband_version) && Objects.equals(cpu, phone.cpu) && Objects.equals(gpu, phone.gpu) && Objects.equals(ram, phone.ram);
+        return phoneID == phone.phoneID && userID == phone.userID && Objects.equals(model_name, phone.model_name) && Objects.equals(brand, phone.brand) && Objects.equals(firmware_version, phone.firmware_version) && Objects.equals(android_version, phone.android_version) && Objects.equals(security_patch, phone.security_patch) && Objects.equals(build_number, phone.build_number) && Objects.equals(kernel_version, phone.kernel_version) && Objects.equals(baseband_version, phone.baseband_version);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(phoneID, userID, model_name, brand, imei_number, firmware_version, android_version, security_patch, build_number, kernel_version, baseband_version, cpu, gpu, ram);
+        return Objects.hash(phoneID, userID, model_name, brand, firmware_version, android_version, security_patch, build_number, kernel_version, baseband_version);
     }
 
     public int getUserID() {
