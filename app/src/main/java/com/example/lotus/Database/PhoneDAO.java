@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.example.lotus.Database.entities.Phone;
 
@@ -32,9 +33,6 @@ public interface PhoneDAO {
     @Query("SELECT * FROM " + LoginDatabase.PHONE_TABLE + " WHERE userID = :userID")
     Phone getPhoneByUserID(int userID);
 
-    // get me the imie number from the users phone
-    @Query("SELECT imei_number FROM " + LoginDatabase.PHONE_TABLE + " WHERE userID = :userID")
-    String getImeiNumber(int userID);
     // get the model name from the users phone
     @Query("SELECT model_name FROM " + LoginDatabase.PHONE_TABLE + " WHERE userID = :userID")
     String getModelName(int userID);
@@ -60,19 +58,7 @@ public interface PhoneDAO {
     @Query("SELECT baseband_version FROM " + LoginDatabase.PHONE_TABLE + " WHERE userID = :userID")
     String getBasebandVersion(int userID);
     // get the cpu of the users phone
-    @Query("SELECT cpu FROM " + LoginDatabase.PHONE_TABLE + " WHERE userID = :userID")
-    String getCpu(int userID);
-    // get the gpu of the users phone
-    @Query("SELECT gpu FROM " + LoginDatabase.PHONE_TABLE + " WHERE userID = :userID")
-    String getGpu(int userID);
-    // get the ram of the users phone
-    @Query("SELECT ram FROM " + LoginDatabase.PHONE_TABLE + " WHERE userID = :userID")
-    String getRam(int userID);
 
-
-    // Update the phone database with emei number using userID
-    @Query("UPDATE " + LoginDatabase.PHONE_TABLE + " SET imei_number = :imei_number WHERE userID = :userID")
-    void insertImeiNumber(String imei_number, int userID);
     // Update the phone database with model name using userID
     @Query("UPDATE " + LoginDatabase.PHONE_TABLE + " SET model_name = :model_name WHERE userID = :userID")
     void insertModelName(String model_name, int userID);
@@ -98,15 +84,17 @@ public interface PhoneDAO {
     @Query("UPDATE " + LoginDatabase.PHONE_TABLE + " SET baseband_version = :baseband_version WHERE userID = :userID")
     void insertBasebandVersion(String baseband_version, int userID);
     // Update the phone database with cpu using userID
-    @Query("UPDATE " + LoginDatabase.PHONE_TABLE + " SET cpu = :cpu WHERE userID = :userID")
-    void insertCpu(String cpu, int userID);
-    // Update the phone database with gpu using userID
-    @Query("UPDATE " + LoginDatabase.PHONE_TABLE + " SET gpu = :gpu WHERE userID = :userID")
-    void insertGpu(String gpu, int userID);
-    // Update the phone database with ram using userID
-    @Query("UPDATE " + LoginDatabase.PHONE_TABLE + " SET ram = :ram WHERE userID = :userID")
-    void insertRam(String ram, int userID);
 
 
-
+    @Transaction
+    public default void updatePhoneDetails(Phone phone) {
+        insertModelName(phone.getModel_name(), phone.getUserID());
+        insertBrand(phone.getBrand(), phone.getUserID());
+        insertFirmwareVersion(phone.getFirmware_version(), phone.getUserID());
+        insertAndroidVersion(phone.getAndroid_version(), phone.getUserID());
+        insertSecurityPatch(phone.getSecurity_patch(), phone.getUserID());
+        insertBasebandVersion(phone.getBaseband_version(), phone.getUserID());
+        insertBuildNumber(phone.getBuild_number(), phone.getUserID());
+        insertKernelVersion(phone.getKernel_version(), phone.getUserID());
+    }
 }

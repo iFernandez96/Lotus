@@ -144,13 +144,7 @@ public class LoginRepo {
             phoneDAO.insert(phone);
         });
     }
-    // insert an imei number into the database
-    public void insertImeiNumber(String imei_number, int userID){
-        LoginDatabase.databaseWriteExecutor.execute(() ->
-        {
-            phoneDAO.insertImeiNumber(imei_number, userID);
-        });
-    }
+
     // insert a model name into the database
     public void insertModelName(String model_name, int userID){
         LoginDatabase.databaseWriteExecutor.execute(() ->
@@ -207,25 +201,10 @@ public class LoginRepo {
             phoneDAO.insertBasebandVersion(baseband_version, userID);
         });
     }
-    // insert a cpu into the database
-    public void insertCpu(String cpu, int userID){
-        LoginDatabase.databaseWriteExecutor.execute(() ->
-        {
-            phoneDAO.insertCpu(cpu, userID);
-        });
-    }
-    // insert a gpu into the database
-    public void insertGpu(String gpu, int userID){
-        LoginDatabase.databaseWriteExecutor.execute(() ->
-        {
-            phoneDAO.insertGpu(gpu, userID);
-        });
-    }
-    // insert a ram into the database
-    public void insertRam(String ram, int userID){
-        LoginDatabase.databaseWriteExecutor.execute(() ->
-        {
-            phoneDAO.insertRam(ram, userID);
+    //update the database with the phone details
+    public void updateDatabaseWithPhoneDetails(Phone phone){
+        LoginDatabase.databaseWriteExecutor.execute(() -> {
+            phoneDAO.updatePhoneDetails(phone);
         });
     }
     // delete all the data of the user's phone
