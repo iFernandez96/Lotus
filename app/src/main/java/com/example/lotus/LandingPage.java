@@ -1,6 +1,5 @@
 package com.example.lotus;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,13 +12,20 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lotus.Database.LoginRepo;
+import com.example.lotus.Database.entities.Statistics;
 import com.example.lotus.Database.entities.User;
 import com.example.lotus.databinding.ActivityLandingPageBinding;
+
+import java.time.LocalDateTime;
 
 public class LandingPage extends AppCompatActivity {
     private LoginRepo repository;
     private String username;
     private boolean isTracking = false;
+    private static final String TAG = "LandingPage";
+    private Statistics statistics;
+    private long totalTrackerUseTime = 0;
+    private LotusHeadTracking lotusHeadTracking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,26 +59,38 @@ public class LandingPage extends AppCompatActivity {
         if (!checkUserExists(username)){
             finish();
         }
+
+
         landingPageBinding.usernameView.setText(username);
-
-
         User user = repository.getUserByUsername(username);
         if (user != null) {
+            // Update the statistics for the user
+            statistics = repository.getStatisticsByUserID(user.getId());
+            statistics.setLastLogin(LocalDateTime.now());
+            statistics.setTotalLogins(statistics.getTotalLogins() + 1);
+
             landingPageBinding.usernameView.setText(username);
             landingPageBinding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
         }
 
         ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
-        LotusHeadTracking lotusHeadTracking = new LotusHeadTracking(getApplicationContext(), this);
+        lotusHeadTracking = new LotusHeadTracking(getApplicationContext(), this);
         lotusHeadTrackingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isTracking = !isTracking;
                 if (isTracking) {
                     playSound(R.raw.autoon);
+                    statistics.setLastTrackerUse(LocalDateTime.now());
+                    statistics.setTotalTimesUsedTracker(statistics.getTotalTimesUsedTracker() + 1);
+                    // start timing for average use time in seconds
+                    totalTrackerUseTime = (long) (System.currentTimeMillis() / 1000.0);
                     lotusHeadTracking.startTracking();
                 } else {
                     playSound(R.raw.autooff);
+                    // stop timing for average use time in seconds
+                    totalTrackerUseTime = (long) (System.currentTimeMillis() / 1000.0) - totalTrackerUseTime;
+                    statistics.setAverageUseTime((int) ((statistics.getAverageUseTime() * statistics.getTotalTimesUsedTracker() + totalTrackerUseTime) /2));
                     lotusHeadTracking.stopTracking();
                 }
             }
@@ -90,6 +108,31 @@ public class LandingPage extends AppCompatActivity {
 
         // Done with basic startup tasks
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        cleanUp();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cleanUp();
+    }
+
+    private void cleanUp() {
+        if (isTracking)
+        {
+            playSound(R.raw.autooff);
+            lotusHeadTracking.stopTracking();
+            statistics.setAverageUseTime((int) ((statistics.getAverageUseTime() * statistics.getTotalTimesUsedTracker() + totalTrackerUseTime) /2));
+            statistics.setLastLogout(LocalDateTime.now());
+            statistics.setLastTrackerUse(LocalDateTime.now());
+            // statistics.setTotalHeadTriggers();
+        }
     }
 
     private void playSound(int soundResourceId) {
