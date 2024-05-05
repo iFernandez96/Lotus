@@ -88,11 +88,11 @@ public class LoginRepo {
 //        LoginDatabase.databaseWriteExecutor.execute(userDao::deleteAll);
 //    }
 
-//    public void addStatistics(Statistics statistics) {
-//        LoginDatabase.databaseWriteExecutor.execute(() -> {
-//            StatisticsDao.insert(statistics);
-//        });
-//    }
+    public void insertStatistics(Statistics statistics) {
+        LoginDatabase.databaseWriteExecutor.execute(() -> {
+            StatisticsDao.insert(statistics);
+        });
+    }
 
     public Statistics getStatisticsByUserID(int userID) {
         Future<Statistics> future = LoginDatabase.databaseWriteExecutor.submit(
