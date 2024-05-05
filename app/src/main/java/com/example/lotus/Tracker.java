@@ -19,9 +19,10 @@ public class Tracker implements SensorEventListener {
     private final Context context;
     boolean isTracking = false;
     private final Activity activity;
+    private int numHeadDips = 0;
 
-    protected float bottomRange = 180;
-    protected float topRange = -180;
+    private float bottomRange = 180;
+    private float topRange = -180;
 
     public Tracker(Context context, Activity activity) {
         this.context = context;
@@ -117,6 +118,7 @@ public class Tracker implements SensorEventListener {
             if (yaw < 85 && !passed_threshold) {
                 passed_threshold = true;
                 showHeadDipNotification();
+                numHeadDips++;
                 Toast.makeText(context, "Passed the 85 degree yaw threshold" + yaw, Toast.LENGTH_SHORT).show();
             }
 
@@ -184,5 +186,17 @@ public class Tracker implements SensorEventListener {
             // Permission already granted, show notification
             notificationManager.notify(1, builder.build());
         }
+    }
+
+    public int getNumHeadDips() {
+        return numHeadDips;
+    }
+
+    public float getBottomRange() {
+        return bottomRange;
+    }
+
+    public float getTopRange() {
+        return topRange;
     }
 }
