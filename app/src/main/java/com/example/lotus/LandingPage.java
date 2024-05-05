@@ -105,6 +105,7 @@ public class LandingPage extends AppCompatActivity {
             lotusHeadTracking.stopTracking();
             statistics.setLastLogout(LocalDateTime.now());
             statistics.setLastTrackerUse(LocalDateTime.now());
+            repository.insertStatistics(statistics);
             repository.updateAllUserStatistics(statistics.getUserID(), statistics.getRangeHeadMovement(), statistics.getTotalLogins(), statistics.getTotalHeadTriggers(),statistics.getTotalTimesUsedTracker(), statistics.getAverageUseTime(), statistics.getLastLogin(), statistics.getLastLogout(), statistics.getLastTrackerUse());
         }
     }
