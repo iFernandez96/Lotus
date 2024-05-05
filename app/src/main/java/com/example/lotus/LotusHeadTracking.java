@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 
 public class LotusHeadTracking {
-    private final Context context; // Added to hold the Context
 
-    private Tracker tracker;
+    private final Tracker tracker;
+    protected float bottomRange = 180;
+    protected float topRange = -180;
     public LotusHeadTracking(Context context, Activity activity) { // Constructor to receive a Context
-        this.context = context;
+        // Added to hold the Context
         tracker = new Tracker(context, activity);
         tracker.initializeSensors();
     }
@@ -18,6 +19,8 @@ public class LotusHeadTracking {
     }
 
     public void stopTracking() {
+        bottomRange = tracker.bottomRange;
+        topRange = tracker.topRange;
         tracker.stopTracking();
     }
 }

@@ -15,12 +15,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.lotus.Database.entities.Statistics;
-
 public class Tracker implements SensorEventListener {
     private final Context context;
     boolean isTracking = false;
     private final Activity activity;
+
+    protected float bottomRange = 180;
+    protected float topRange = -180;
 
     public Tracker(Context context, Activity activity) {
         this.context = context;
@@ -84,7 +85,7 @@ public class Tracker implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR && isTracking) {
-            float diff;
+            // float diff;
             float[] quaternion = new float[4];
             quaternion[0] = event.values[0]; // Assigning w
             quaternion[1] = event.values[1]; // Assigning x
@@ -92,8 +93,8 @@ public class Tracker implements SensorEventListener {
             quaternion[3] = event.values[3]; // Assigning z
 
             float[] euler = quaternionToEuler(quaternion);
-            float roll = euler[0];
-            float pitch = euler[1];
+//            float roll = euler[0];
+//            float pitch = euler[1];
             float yaw = euler[2];
 
             /*if (past_yaw ==0){
@@ -127,6 +128,8 @@ public class Tracker implements SensorEventListener {
             //    past_pitch = pitch;
             //    Toast.makeText(context,"Passed the 90 degree pitch threshold" + pitch,Toast.LENGTH_SHORT).show();
             //}
+            bottomRange = Math.min(bottomRange, yaw);
+            topRange = Math.max(topRange, yaw);
         }
     }
 
