@@ -1,7 +1,5 @@
 package com.example.lotus;
 
-import static com.example.lotus.Database.LoginRepo.repository;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
