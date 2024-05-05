@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        repository = LoginRepo.getRepo(getApplication());
+        assert repository != null;
         EdgeToEdge.enable(this);
         if (isUserLoggedIn(getApplicationContext())) {
             Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
