@@ -40,14 +40,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
 
         if (isLoggedIn) {
-            // Check for permissions and get phone details if logged in
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSION_REQUEST_CODE);
-                getPhoneDetails();
-            } else {
-                getPhoneDetails();
-            }
-
+            getPhoneDetails();
             Intent intent = intentFactory.createIntent(getApplicationContext(), LandingPage.class);
             intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
             startActivity(intent);
@@ -90,8 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "Device Information:");
         Log.d(TAG, "Model: " + phone.getModel_name() + ", Android Version: " + phone.getAndroid_version());
-
-        repository.insertPhone(phone);
+        if (repository.getPhoneByUserID(phone.getUserID()) == null) {
+            repository.insertPhone(phone);
+        }
         repository.updateDatabaseWithPhoneDetails(phone);
     }
 }

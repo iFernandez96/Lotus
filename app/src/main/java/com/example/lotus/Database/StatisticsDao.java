@@ -80,10 +80,13 @@ public interface StatisticsDao {
 //    @Query("SELECT lastLogin FROM " + LoginDatabase.STATISTICS_TABLE + " WHERE userID = :userID")
 //    String getLastLoginByUserID(int userID);
 //
-//    // get the range of head movement for a specific user
-//    @Query("SELECT rangeHeadMovement FROM " + LoginDatabase.STATISTICS_TABLE + " WHERE userID = :userID")
-//    float[] getRangeHeadMovementByUserID(int userID);
+    // get the range of head movement for a specific user
+    @Query("SELECT rangeHeadMovementBottom FROM " + LoginDatabase.STATISTICS_TABLE + " WHERE userID = :userID")
+    float getRangeHeadMovementBottom(int userID);
 
+    // get the range of head movement for a specific user
+    @Query("SELECT rangeHeadMovementTop FROM " + LoginDatabase.STATISTICS_TABLE + " WHERE userID = :userID")
+    float getRangeHeadMovementTop(int userID);
     // update the total logins for a specific user
     @Query("UPDATE " + LoginDatabase.STATISTICS_TABLE + " SET totalLogins = :totalLogins WHERE userID = :userID")
     void updateTotalLogins(int totalLogins, int userID);
@@ -109,8 +112,9 @@ public interface StatisticsDao {
     void updateLastLogin(LocalDateTime lastLogin, int userID);
 
     // update the range of head movement for a specific user
-    @Query("UPDATE " + LoginDatabase.STATISTICS_TABLE + " SET rangeHeadMovement = :rangeHeadMovement WHERE userID = :userID")
-    void updateRangeHeadMovement(float[] rangeHeadMovement, int userID);
+    @Query("UPDATE " + LoginDatabase.STATISTICS_TABLE +
+            " SET rangeHeadMovementBottom = :rangeHeadMovementBottom, rangeHeadMovementTop = :rangeHeadMovementTop WHERE userID = :userID")
+    void updateRangeHeadMovement(float rangeHeadMovementBottom, float rangeHeadMovementTop, int userID);
 
     // update the last logout for a specific user
     @Query("UPDATE " + LoginDatabase.STATISTICS_TABLE + " SET lastLogout = :lastLogout WHERE userID = :userID")
@@ -142,17 +146,27 @@ public interface StatisticsDao {
 //    void updateTotalTimesUsedTrackerByUserID(int totalTimesUsedTracker, int userID);
 
     @Transaction
-    default void updateAllUserStatistics(int userID, float[] rangeHeadMovement, int totalLogins, int totalHeadTriggers,
-                                         int totalTimesUsedTracker, int averageUseTime, LocalDateTime lastLogin, LocalDateTime lastLogout,
-                                         LocalDateTime lastTrackerUse) {
-        updateRangeHeadMovement(rangeHeadMovement, userID);
-        updateTotalLogins(totalLogins, userID);
-        updateTotalHeadTriggers(totalHeadTriggers, userID);
-        updateTotalTimesUsedTracker(totalTimesUsedTracker, userID);
-        updateAverageUseTime(averageUseTime, userID);
-        updateLastLogin(lastLogin, userID);
-        updateLastLogout(lastLogout, userID);
-        updateLastTrackerUse(lastTrackerUse, userID);
+    default void updateAllUserStatistics(Statistics statistics) {
+        updateRangeHeadMovement(statistics.getRangeHeadMovementBottom(), statistics.getRangeHeadMovementTop(), statistics.getUserID());
+        updateTotalLogins(statistics.getTotalLogins(), statistics.getUserID());
+        updateTotalHeadTriggers(statistics.getTotalHeadTriggers(), statistics.getUserID());
+        updateTotalTimesUsedTracker(statistics.getTotalTimesUsedTracker(), statistics.getUserID());
+        updateAverageUseTime(statistics.getAverageUseTime(), statistics.getUserID());
+        updateLastLogin(statistics.getLastLogin(), statistics.getUserID());
+        updateLastLogout(statistics.getLastLogout(), statistics.getUserID());
+        updateLastTrackerUse(statistics.getLastTrackerUse(), statistics.getUserID());
     }
+
+    @Query("UPDATE " + LoginDatabase.STATISTICS_TABLE +
+            " SET rangeHeadMovementBottom = :rangeHeadMovementBottom, rangeHeadMovementTop = :rangeHeadMovementTop, " +
+            "totalLogins = :totalLogins, totalHeadTriggers = :totalHeadTriggers, " +
+            "totalTimesUsedTracker = :totalTimesUsedTracker, averageUseTime = :averageUseTime, " +
+            "lastLogin = :lastLogin, lastLogout = :lastLogout, lastTrackerUse = :lastTrackerUse " +
+            "WHERE userID = :userID")
+    void updateAllUserStatistics(float rangeHeadMovementBottom, float rangeHeadMovementTop, int totalLogins, int totalHeadTriggers,
+                                 int totalTimesUsedTracker, int averageUseTime, LocalDateTime lastLogin, LocalDateTime lastLogout,
+                                 LocalDateTime lastTrackerUse, int userID);
+
+
 
 }

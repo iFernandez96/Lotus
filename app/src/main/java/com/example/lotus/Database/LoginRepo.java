@@ -458,11 +458,8 @@ public class LoginRepo {
 //        return null;
 //    }
 
-    public void updateAllUserStatistics(int userID, float[] rangeHeadMovement, int totalLogins, int totalHeadTriggers,
-                                        int totalTimesUsedTracker, int averageUseTime, LocalDateTime lastLogin, LocalDateTime lastLogout,
-                                        LocalDateTime lastTrackerUse) {
-        LoginDatabase.databaseWriteExecutor.execute(() -> StatisticsDao.updateAllUserStatistics(userID, rangeHeadMovement, totalLogins, totalHeadTriggers,
-                totalTimesUsedTracker, averageUseTime, lastLogin, lastLogout, lastTrackerUse));
+    public void updateAllUserStatistics(Statistics statistics) {
+        LoginDatabase.databaseWriteExecutor.execute(() -> StatisticsDao.updateAllUserStatistics(statistics));
     }
 
     // get a phone by the user id

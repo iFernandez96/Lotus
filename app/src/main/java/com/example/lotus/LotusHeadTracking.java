@@ -6,8 +6,10 @@ import android.content.Context;
 public class LotusHeadTracking {
 
     private final Tracker tracker;
-    protected float bottomRange = 180;
-    protected float topRange = -180;
+    private float bottomRange = 180;
+    private float topRange = -180;
+    private int numHeadDips;
+
     public LotusHeadTracking(Context context, Activity activity) { // Constructor to receive a Context
         // Added to hold the Context
         tracker = new Tracker(context, activity);
@@ -19,8 +21,21 @@ public class LotusHeadTracking {
     }
 
     public void stopTracking() {
-        bottomRange = tracker.bottomRange;
-        topRange = tracker.topRange;
+        bottomRange = tracker.getBottomRange();
+        topRange = tracker.getTopRange();
+        numHeadDips = tracker.getNumHeadDips();
         tracker.stopTracking();
+    }
+
+    public float getBottomRange() {
+        return bottomRange;
+    }
+
+    public float getTopRange() {
+        return topRange;
+    }
+
+    public int getNumHeadDips() {
+        return numHeadDips;
     }
 }
