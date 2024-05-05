@@ -27,7 +27,14 @@ public class LoginRepo {
         this.phoneDAO = db.phoneDao();
         this.allLogins = (ArrayList<User>) this.userDao.getAllUsers();
     }
-
+    /*
+    public void addUserWithPhone(User user, Phone phone) {
+        LoginDatabase.databaseWriteExecutor.execute(() -> {
+            userDao.insert(user);
+            phoneDAO.insert(phone);
+        });
+    }
+     */
     //abstraction to get all records on a thread
     public ArrayList<User> getAllLogins() {
         //uses future

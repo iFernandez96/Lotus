@@ -88,13 +88,18 @@ public interface PhoneDAO {
 
     @Transaction
     public default void updatePhoneDetails(Phone phone) {
-        insertModelName(phone.getModel_name(), phone.getUserID());
-        insertBrand(phone.getBrand(), phone.getUserID());
-        insertFirmwareVersion(phone.getFirmware_version(), phone.getUserID());
-        insertAndroidVersion(phone.getAndroid_version(), phone.getUserID());
-        insertSecurityPatch(phone.getSecurity_patch(), phone.getUserID());
-        insertBasebandVersion(phone.getBaseband_version(), phone.getUserID());
-        insertBuildNumber(phone.getBuild_number(), phone.getUserID());
-        insertKernelVersion(phone.getKernel_version(), phone.getUserID());
+        updatePhoneDetails(phone.getModel_name(), phone.getBrand(), phone.getFirmware_version(),
+                phone.getAndroid_version(), phone.getSecurity_patch(), phone.getBuild_number(),
+                phone.getKernel_version(), phone.getBaseband_version(), phone.getUserID());
     }
+
+    @Query("UPDATE " + LoginDatabase.PHONE_TABLE +
+            " SET model_name = :model_name, brand = :brand, firmware_version = :firmware_version, " +
+            "android_version = :android_version, security_patch = :security_patch, " +
+            "build_number = :build_number, kernel_version = :kernel_version, " +
+            "baseband_version = :baseband_version WHERE userID = :userID")
+    void updatePhoneDetails(String model_name, String brand, String firmware_version,
+                            String android_version, String security_patch, String build_number,
+                            String kernel_version, String baseband_version, int userID);
+
 }
