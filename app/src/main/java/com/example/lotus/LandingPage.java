@@ -49,60 +49,6 @@ public class LandingPage extends AppCompatActivity {
         return repository.getUserByUsername(username) != null;
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        EdgeToEdge.enable(this);
-//
-//        ActivityLandingPageBinding landingPageBinding = ActivityLandingPageBinding.inflate(getLayoutInflater());
-//        setContentView(landingPageBinding.getRoot());
-//
-//        repository = LoginRepo.getRepo(getApplication());
-//        assert repository != null;
-//
-//        String username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
-//        if (!checkUserExists(username)){
-//            Toast.makeText(this, "Please Refresh cache and delete App data", Toast.LENGTH_SHORT).show();
-//            finish();
-//        }
-//
-//
-//        landingPageBinding.usernameView.setText(username);
-//        User user = repository.getUserByUsername(username);
-//        if (user != null) {
-//            // Update the statistics for the user
-//            if (repository.getStatisticsByUserID(user.getId()) == null) {
-//                statistics = new Statistics(user.getId());
-//                repository.insertStatistics(statistics);
-//            } else {
-//                statistics = repository.getStatisticsByUserID(user.getId());
-//            }
-//            statistics.setUserID(user.getId());
-//            statistics.setLastLogin(LocalDateTime.now());
-//            statistics.setTotalLogins(statistics.getTotalLogins() + 1);
-//
-//            landingPageBinding.usernameView.setText(username);
-//            landingPageBinding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
-//        }
-//
-//        ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
-//        lotusHeadTracking = new LotusHeadTracking(getApplicationContext(), this);
-//        lotusHeadTrackingbutton.setOnClickListener(v -> {
-//            isTracking = !isTracking;
-//            new LotusHeadTrackingHelper(isTracking, statistics, totalTrackerUseTime, lotusHeadTracking, activity).execute();
-//        });
-//
-//        Button settingsButton = landingPageBinding.settingsButton;
-//
-//        settingsButton.setOnClickListener(v -> {
-//            Intent intent = new Intent(LandingPage.this, SettingsActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        // Done with basic startup tasks
-//
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -139,6 +85,21 @@ public class LandingPage extends AppCompatActivity {
                 playSound(R.raw.autooff);
             }
             new LotusHeadTrackingHelper(isTracking, statistics, totalTrackerUseTime, lotusHeadTracking, this).execute();
+        });
+    }
+
+
+    private void setupProgressTrackerButton() {
+        Button progressTrackerButton = binding.progressTrackerButton;
+        progressTrackerButton.setOnClickListener(v -> {
+            startActivity(intentFactory.createIntent(getApplicationContext(), ProgressTracking.class));
+        });
+    }
+
+    private void setupProfileActivitiesButton() {
+        Button profileActivitiesButton = binding.profileActivitiesButton;
+        profileActivitiesButton.setOnClickListener(v -> {
+            startActivity(intentFactory.createIntent(getApplicationContext(), ProfileActivity.class));
         });
     }
 
@@ -212,17 +173,6 @@ public class LandingPage extends AppCompatActivity {
             repository.updateAllUserStatistics(statistics);
         }
     }
-
-//    void playSound(int soundResourceId) {
-//        MediaPlayer mediaPlayer = MediaPlayer.create(this, soundResourceId);
-//        if (mediaPlayer != null) {
-//            mediaPlayer.start();
-//            mediaPlayer.setOnCompletionListener(MediaPlayer::release);
-//        } else {
-//            // Handle error: MediaPlayer creation failed
-//            Log.e("MediaPlayer", "Could not create MediaPlayer for resource ID: " + soundResourceId);
-//        }
-//    }
 
     void playSound(int soundResourceId) {
         try {

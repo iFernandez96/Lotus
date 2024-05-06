@@ -1,24 +1,58 @@
 package com.example.lotus;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.lotus.Database.entities.Statistics;
 
 public class ProgressTracking extends AppCompatActivity {
+    private StatisticsViewModel statisticsViewModel;
+
+    private TextView tvTotalLogins;
+    private TextView tvAverageUseTime;
+    private TextView tvHeadMovementRange;
+    private TextView tvTotalHeadTriggers;
+    private TextView tvTotalTimesUsedTracker;
+    private TextView tvLastTrackerUse;
+    private TextView tvLastLogin;
+    private TextView tvLastLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_progress_tracking);
+
+        initViews();
+        statisticsViewModel = new ViewModelProvider(this).get(StatisticsViewModel.class);
+
+        int userId = 1; // Assuming user ID is known and fixed for this example
+        statisticsViewModel.getStatisticsByUserId(userId).observe(this, this::updateUI);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void initViews() {
+        tvTotalLogins = findViewById(R.id.tvTotalLogins);
+        tvAverageUseTime = findViewById(R.id.tvAverageUseTime);
+        tvHeadMovementRange = findViewById(R.id.tvHeadMovementRange);
+        tvTotalHeadTriggers = findViewById(R.id.tvTotalHeadTriggers);
+        tvTotalTimesUsedTracker = findViewById(R.id.tvTotalTimesUsedTracker);
+        tvLastTrackerUse = findViewById(R.id.tvLastTrackerUse);
+        tvLastLogin = findViewById(R.id.tvLastLogin);
+        tvLastLogout = findViewById(R.id.tvLastLogout);
+    }
+
+    private void updateUI(Statistics statistics) {
+        if (statistics != null) {
+            tvTotalLogins.setText("Total Logins: " + statistics.getTotalLogins());
+            tvAverageUseTime.setText("Average Use Time: " + statistics.getAverageUseTime() + " minutes");
+            tvHeadMovementRange.setText("Head Movement Range: " + statistics.getRangeHeadMovementBottom() + " to " + statistics.getRangeHeadMovementTop());
+            tvTotalHeadTriggers.setText("Total Head Triggers: " + statistics.getTotalHeadTriggers());
+            tvTotalTimesUsedTracker.setText("Total Times Used Tracker: " + statistics.getTotalTimesUsedTracker());
+            tvLastTrackerUse.setText("Last Tracker Use: " + statistics.getLastTrackerUse().toString());
+            tvLastLogin.setText("Last Login: " + statistics.getLastLogin().toString());
+            tvLastLogout.setText("Last Logout: " + statistics.getLastLogout().toString());
+        }
     }
 }
