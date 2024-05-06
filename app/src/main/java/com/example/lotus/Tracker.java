@@ -118,6 +118,7 @@ public class Tracker implements SensorEventListener {
             if (yaw < 85 && !passed_threshold) {
                 passed_threshold = true;
                 showHeadDipNotification();
+
                 numHeadDips++;
                 Toast.makeText(context, "Passed the 85 degree yaw threshold" + yaw, Toast.LENGTH_SHORT).show();
             }
