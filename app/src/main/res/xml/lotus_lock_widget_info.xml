@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/lotus_lock_widget"
+    android:minWidth="180dp"
+    android:minHeight="50dp"
+    android:updatePeriodMillis="7200000"
+    android:previewImage="@drawable/lotus_button_start_head_tracking"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen">
+</appwidget-provider>
+
+
