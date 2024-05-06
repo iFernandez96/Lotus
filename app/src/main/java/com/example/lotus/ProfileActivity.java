@@ -1,5 +1,7 @@
 package com.example.lotus;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
 
         Button buttonUpdateProfile = findViewById(R.id.buttonUpdateProfile);
-        Button logoutButton = findViewById(R.id.Logout_button);
+        Button backButton = findViewById(R.id.back_button);
         Button deleteUserButton = findViewById(R.id.deleteUser);
 
         repository = LoginRepo.getRepo(getApplication());
@@ -35,10 +37,11 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                exitLoginSession(getApplicationContext());
+                startActivity(intentFactory.createIntent(getApplicationContext(), LandingPage.class));
             }
         });
 
@@ -46,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deleteUser();
+                startActivity(intentFactory.createIntent(getApplicationContext(), LoginActivity.class));
             }
         });
     }
@@ -56,18 +60,21 @@ public class ProfileActivity extends AppCompatActivity {
 
         repository.updateUser(name, email, password);
         showToast("Updating profile with name: " + name + ", email: " + email);
+
+        startActivity(intentFactory.createIntent(getApplicationContext(), LoginActivity.class));
     }
 
-    private void logout() {
-        // Handle logout logic here, e.g., clearing user data or SharedPreferences
-        showToast("User Logged Out");
-        finish(); // Close the activity
+    public void exitLoginSession(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("isLoggedIn", false);
+        editor.apply();
     }
-
     private void deleteUser() {
         // Handle delete user logic here
         showToast("User Deleted");
-        finish(); // Close the activity
+        repository.deleteUser();
+        exitLoginSession(getApplicationContext());
     }
 
     private void showToast(String message) {

@@ -557,5 +557,10 @@ public class LoginRepo {
         });
     }
 
+    // Delete User from the database
+    public void deleteUser(){
+        LoginDatabase.databaseWriteExecutor.execute(userDao::deleteAll);
+    }
+
 
 }

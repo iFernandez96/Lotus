@@ -19,29 +19,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter your name"
-        android:inputType="textPersonName"/>
+        android:inputType="textPersonName"
+        android:minHeight="48dp"/>
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter your email"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"/>
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter your password"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:minHeight="48dp"/>
 
-    <!-- Existing layout for switches and settings -->
-    <!-- Include the other LinearLayouts for switches and SeekBar here as per your original layout -->
-
+    <!-- Example buttons with appropriate touch target sizes -->
     <Button
         android:id="@+id/buttonUpdateProfile"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:layout_gravity="center_horizontal"
         android:text="Update Profile"
         android:backgroundTint="@color/black"
@@ -49,20 +51,21 @@
         android:layout_marginTop="20dp"/>
 
     <Button
-        android:id="@+id/Logout_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/black"
         android:fontFamily="@font/vast_shadow"
-        android:text="Logout"
-        android:textColor="@android:color/white"
-        android:shadowColor="@color/black"/>
+        android:text="Back"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:id="@+id/deleteUser"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/black"
         android:fontFamily="@font/vast_shadow"
