@@ -29,4 +29,5 @@
     <string name="start_posture">Start Posture</string>
     <string name="settings">Settings</string>
     <string name="delete_user">Delete User</string>
+    <string name="widget_lotus_button_start_head_tracking">widget_lotus_button_start_head_tracking</string>
 </resources>
