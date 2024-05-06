@@ -29,6 +29,7 @@ public class LandingPage extends AppCompatActivity {
     private LotusHeadTracking lotusHeadTracking;
     private ActivityLandingPageBinding binding;
     private MediaPlayer mediaPlayer;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,60 +50,6 @@ public class LandingPage extends AppCompatActivity {
         return repository.getUserByUsername(username) != null;
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        EdgeToEdge.enable(this);
-//
-//        ActivityLandingPageBinding landingPageBinding = ActivityLandingPageBinding.inflate(getLayoutInflater());
-//        setContentView(landingPageBinding.getRoot());
-//
-//        repository = LoginRepo.getRepo(getApplication());
-//        assert repository != null;
-//
-//        String username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
-//        if (!checkUserExists(username)){
-//            Toast.makeText(this, "Please Refresh cache and delete App data", Toast.LENGTH_SHORT).show();
-//            finish();
-//        }
-//
-//
-//        landingPageBinding.usernameView.setText(username);
-//        User user = repository.getUserByUsername(username);
-//        if (user != null) {
-//            // Update the statistics for the user
-//            if (repository.getStatisticsByUserID(user.getId()) == null) {
-//                statistics = new Statistics(user.getId());
-//                repository.insertStatistics(statistics);
-//            } else {
-//                statistics = repository.getStatisticsByUserID(user.getId());
-//            }
-//            statistics.setUserID(user.getId());
-//            statistics.setLastLogin(LocalDateTime.now());
-//            statistics.setTotalLogins(statistics.getTotalLogins() + 1);
-//
-//            landingPageBinding.usernameView.setText(username);
-//            landingPageBinding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
-//        }
-//
-//        ImageButton lotusHeadTrackingbutton = findViewById(R.id.imageButton);
-//        lotusHeadTracking = new LotusHeadTracking(getApplicationContext(), this);
-//        lotusHeadTrackingbutton.setOnClickListener(v -> {
-//            isTracking = !isTracking;
-//            new LotusHeadTrackingHelper(isTracking, statistics, totalTrackerUseTime, lotusHeadTracking, activity).execute();
-//        });
-//
-//        Button settingsButton = landingPageBinding.settingsButton;
-//
-//        settingsButton.setOnClickListener(v -> {
-//            Intent intent = new Intent(LandingPage.this, SettingsActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        // Done with basic startup tasks
-//
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -111,6 +58,9 @@ public class LandingPage extends AppCompatActivity {
         setupUserDetails();
         setupTrackingButton();
         setupSettingsButton();
+        setupProgressTrackerButton();
+        setupProfileActivitiesButton();
+        setupAdminButton();
     }
 
     private void setupSettingsButton() {
@@ -143,10 +93,39 @@ public class LandingPage extends AppCompatActivity {
     }
 
 
+    private void setupProgressTrackerButton() {
+        Button progressTrackerButton = binding.progressButton;
+        progressTrackerButton.setOnClickListener(v -> {
+            Intent intent = intentFactory.createIntent(getApplicationContext(), ProgressTracking.class);
+            intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
+            startActivity(intent);
+        });
+    }
+
+    private void setupProfileActivitiesButton() {
+        Button profileActivitiesButton = binding.updateProfile;
+        profileActivitiesButton.setOnClickListener(v -> {
+
+            Intent intent = intentFactory.createIntent(getApplicationContext(), ProfileActivity.class);
+            intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
+            startActivity(intent);
+        });
+    }
+
+    private void setupAdminButton() {
+        Button adminButton = binding.Admin;
+        if (repository.getUserByUsername(username).isAdmin()) {
+            adminButton.setVisibility(View.VISIBLE);
+        }
+        adminButton.setOnClickListener(v -> {
+            Intent intent = intentFactory.createIntent(getApplicationContext(), AdminActivity.class);
+            startActivity(intent);
+        });
+    }
 
 
     private void setupUserDetails() {
-        String username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
+        username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
 
         new Thread(() -> {
             if (!checkUserExists(username)) {
@@ -162,8 +141,7 @@ public class LandingPage extends AppCompatActivity {
             User user = repository.getUserByUsername(username);
             if (user != null) {
                 runOnUiThread(() -> {
-                    binding.usernameView.setText(username);
-                    binding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
+                    binding.usernameView.setText("Welcome, " + user.getUsername() + "!");
                 });
                 setupStatisticsForUser(user);
             }
@@ -212,17 +190,6 @@ public class LandingPage extends AppCompatActivity {
             repository.updateAllUserStatistics(statistics);
         }
     }
-
-//    void playSound(int soundResourceId) {
-//        MediaPlayer mediaPlayer = MediaPlayer.create(this, soundResourceId);
-//        if (mediaPlayer != null) {
-//            mediaPlayer.start();
-//            mediaPlayer.setOnCompletionListener(MediaPlayer::release);
-//        } else {
-//            // Handle error: MediaPlayer creation failed
-//            Log.e("MediaPlayer", "Could not create MediaPlayer for resource ID: " + soundResourceId);
-//        }
-//    }
 
     void playSound(int soundResourceId) {
         try {
