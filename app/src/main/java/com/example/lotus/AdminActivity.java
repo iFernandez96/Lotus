@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.lotus.Database.LoginRepo;
 import com.example.lotus.Database.entities.User;
 
 public class AdminActivity extends AppCompatActivity {
@@ -31,7 +32,11 @@ public class AdminActivity extends AppCompatActivity {
         buttonUpdate = findViewById(R.id.buttonUpdate);
         buttonDelete = findViewById(R.id.buttonDelete);
 
-        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        // Assume UserRepository is initialized here; provide the actual repository
+        LoginRepo Repo = LoginRepo.getRepo(getApplication());
+        UserViewModelFactory factory = new UserViewModelFactory(Repo);
+        viewModel = new ViewModelProvider(this, factory).get(UserViewModel.class);
+
         setupSearch();
         setupButtons();
     }
@@ -47,7 +52,7 @@ public class AdminActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return true;  // Setup trie?
+                return true;
             }
         });
 
@@ -69,7 +74,7 @@ public class AdminActivity extends AppCompatActivity {
             User user = new User(
                     editTextName.getText().toString(),
                     editTextEmail.getText().toString(),
-                    editTextPassword.getText().toString()  // TODO: Handle password updates with security in mind.
+                    editTextPassword.getText().toString()
             );
             viewModel.updateUser(user);
             Toast.makeText(AdminActivity.this, "User updated successfully", Toast.LENGTH_SHORT).show();
@@ -78,7 +83,7 @@ public class AdminActivity extends AppCompatActivity {
         buttonDelete.setOnClickListener(v -> {
             viewModel.deleteUser();
             Toast.makeText(AdminActivity.this, "User deleted successfully", Toast.LENGTH_SHORT).show();
-            userDetailsLayout.setVisibility(View.GONE);  // Hide user details layout after deletion.
+            userDetailsLayout.setVisibility(View.GONE);
         });
     }
 }

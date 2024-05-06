@@ -90,11 +90,11 @@ public class LoginRepo {
         LoginDatabase.databaseWriteExecutor.execute(() -> userDao.updateUser(name, email, password));
     }
 
-//    public void deleteUser(User user) {
-//        LoginDatabase.databaseWriteExecutor.execute(() -> {
-//            userDao.delete(user);
-//        });
-//    }
+    public void deleteUser(User user) {
+        LoginDatabase.databaseWriteExecutor.execute(() -> {
+            userDao.delete(user);
+        });
+    }
 
 //    public void deleteAll() {
 //        LoginDatabase.databaseWriteExecutor.execute(userDao::deleteAll);
