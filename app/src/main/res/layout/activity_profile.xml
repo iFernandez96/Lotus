@@ -51,14 +51,14 @@
         android:layout_marginTop="20dp"/>
 
     <Button
-        android:id="@+id/Logout_button"
+        android:id="@+id/back_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/black"
         android:fontFamily="@font/vast_shadow"
-        android:text="Logout"
+        android:text="Back"
         android:textColor="@android:color/white"/>
 
     <Button
