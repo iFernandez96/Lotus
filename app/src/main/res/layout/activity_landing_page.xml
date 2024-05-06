@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="?attr/actionBarSize">
+
     <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background9"
@@ -14,73 +16,83 @@
         tools:layout_editor_absoluteY="32dp">
 
 
-        <TextView
-            android:id="@+id/isAdmin"
-            android:layout_width="300dp"
-            android:layout_height="25dp"
-            android:text="@string/isadmin" />
+        <Button
+            android:id="@+id/progress_button"
+            android:layout_width="138dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginEnd="123dp"
+            android:layout_marginBottom="18dp"
+            android:text="Progress" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/update_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="19dp"
+            android:text="Profile" />
+
+        <Button
+            android:id="@+id/Admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="331dp"
+            android:layout_marginBottom="617dp"
+            android:text="Admin"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/usernameView"
+            android:layout_width="432dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="102dp"
+            android:layout_marginEnd="3dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            tools:text="Welcome! " />
+
+        <Button
+            android:id="@+id/settings_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="290dp"
-            android:layout_marginBottom="19dp"
-            android:text="Progress" />
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="291dp"
+            android:layout_marginBottom="17dp"
+            android:background="@color/black"
+            android:fontFamily="@font/vast_shadow"
+            android:text="@string/settings"
+            app:backgroundTint="@color/black" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="267dp"
+            android:layout_height="209dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="56dp"
+            android:layout_marginBottom="178dp"
+            android:background="@null"
+            android:contentDescription="@string/start_posture"
+            android:scaleType="centerCrop"
+            android:src="@drawable/lotus_button_start_head_tracking" />
     </RelativeLayout>
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="56dp"
-        android:background="@null"
-        android:scaleType="centerCrop"
-        android:src="@drawable/lotus_button_start_head_tracking"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/start_posture" />
-
-    <TextView
-        android:id="@+id/usernameView"
-        android:layout_width="300dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.405"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="200dp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="223dp"
-        tools:text="Name" />
-
-    <Button
-        android:id="@+id/settings_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="28dp"
-        android:background="@color/black"
-        android:fontFamily="@font/vast_shadow"
-        android:text="@string/settings"
-        app:backgroundTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

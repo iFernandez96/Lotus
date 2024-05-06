@@ -29,6 +29,7 @@ public class LandingPage extends AppCompatActivity {
     private LotusHeadTracking lotusHeadTracking;
     private ActivityLandingPageBinding binding;
     private MediaPlayer mediaPlayer;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class LandingPage extends AppCompatActivity {
         setupUserDetails();
         setupTrackingButton();
         setupSettingsButton();
+        setupProgressTrackerButton();
+        setupProfileActivitiesButton();
+        setupAdminButton();
     }
 
     private void setupSettingsButton() {
@@ -90,24 +94,38 @@ public class LandingPage extends AppCompatActivity {
 
 
     private void setupProgressTrackerButton() {
-        Button progressTrackerButton = binding.progressTrackerButton;
+        Button progressTrackerButton = binding.progressButton;
         progressTrackerButton.setOnClickListener(v -> {
-            startActivity(intentFactory.createIntent(getApplicationContext(), ProgressTracking.class));
+            Intent intent = intentFactory.createIntent(getApplicationContext(), ProgressTracking.class);
+            intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
+            startActivity(intent);
         });
     }
 
     private void setupProfileActivitiesButton() {
-        Button profileActivitiesButton = binding.profileActivitiesButton;
+        Button profileActivitiesButton = binding.updateProfile;
         profileActivitiesButton.setOnClickListener(v -> {
-            startActivity(intentFactory.createIntent(getApplicationContext(), ProfileActivity.class));
+
+            Intent intent = intentFactory.createIntent(getApplicationContext(), ProfileActivity.class);
+            intent.putExtra(Constants.LOGIN_ACTIVITY_KEY, username);
+            startActivity(intent);
+        });
+    }
+
+    private void setupAdminButton() {
+        Button adminButton = binding.Admin;
+        if (repository.getUserByUsername(username).isAdmin()) {
+            adminButton.setVisibility(View.VISIBLE);
+        }
+        adminButton.setOnClickListener(v -> {
+            Intent intent = intentFactory.createIntent(getApplicationContext(), AdminActivity.class);
+            startActivity(intent);
         });
     }
 
 
-
-
     private void setupUserDetails() {
-        String username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
+        username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
 
         new Thread(() -> {
             if (!checkUserExists(username)) {
@@ -123,8 +141,7 @@ public class LandingPage extends AppCompatActivity {
             User user = repository.getUserByUsername(username);
             if (user != null) {
                 runOnUiThread(() -> {
-                    binding.usernameView.setText(username);
-                    binding.isAdmin.setVisibility(user.isAdmin() ? View.VISIBLE : View.GONE);
+                    binding.usernameView.setText("Welcome, " + user.getUsername() + "!");
                 });
                 setupStatisticsForUser(user);
             }

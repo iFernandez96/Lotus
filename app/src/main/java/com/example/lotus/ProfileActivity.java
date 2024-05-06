@@ -17,18 +17,25 @@ public class ProfileActivity extends AppCompatActivity {
     EditText editTextEmail;
     EditText editTextPassword;
     LoginRepo repository;
+    String username;
+    int userid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+        repository = LoginRepo.getRepo(getApplication());
+        username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
+        userid = repository.getUserByUsername(username).getId();
         editTextName = findViewById(R.id.editTextName);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
+        editTextName.setText(username);
+        editTextEmail.setText(repository.getUserByUsername(username).getEmail());
 
         Button buttonUpdateProfile = findViewById(R.id.buttonUpdateProfile);
         Button backButton = findViewById(R.id.back_button);
         Button deleteUserButton = findViewById(R.id.deleteUser);
 
-        repository = LoginRepo.getRepo(getApplication());
 
         buttonUpdateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
