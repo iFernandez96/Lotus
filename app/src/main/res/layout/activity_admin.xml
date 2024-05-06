@@ -16,7 +16,7 @@
         android:layout_marginBottom="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
-        android:hint="Search for User..."/>
+        android:hint="Search for User..." />
 
     <SearchView
         android:id="@+id/searchUser"
