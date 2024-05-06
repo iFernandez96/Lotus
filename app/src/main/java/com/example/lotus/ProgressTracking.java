@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.lotus.Database.LoginRepo;
 import com.example.lotus.Database.entities.Statistics;
 
 public class ProgressTracking extends AppCompatActivity {
@@ -20,6 +21,8 @@ public class ProgressTracking extends AppCompatActivity {
     private TextView tvLastLogin;
     private TextView tvLastLogout;
 
+    private LoginRepo repository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +30,9 @@ public class ProgressTracking extends AppCompatActivity {
 
         initViews();
         statisticsViewModel = new ViewModelProvider(this).get(StatisticsViewModel.class);
-
-        int userId = 1; // Assuming user ID is known and fixed for this example
+        repository = LoginRepo.getRepo(getApplication());
+        String username = getIntent().getStringExtra(Constants.LOGIN_ACTIVITY_KEY);
+        int userId = repository.getUserByUsername(username).getId();
         statisticsViewModel.getStatisticsByUserId(userId).observe(this, this::updateUI);
     }
 
@@ -46,7 +50,7 @@ public class ProgressTracking extends AppCompatActivity {
     private void updateUI(Statistics statistics) {
         if (statistics != null) {
             tvTotalLogins.setText("Total Logins: " + statistics.getTotalLogins());
-            tvAverageUseTime.setText("Average Use Time: " + statistics.getAverageUseTime() + " minutes");
+            tvAverageUseTime.setText("Average Use Time: " + statistics.getAverageUseTime());
             tvHeadMovementRange.setText("Head Movement Range: " + statistics.getRangeHeadMovementBottom() + " to " + statistics.getRangeHeadMovementTop());
             tvTotalHeadTriggers.setText("Total Head Triggers: " + statistics.getTotalHeadTriggers());
             tvTotalTimesUsedTracker.setText("Total Times Used Tracker: " + statistics.getTotalTimesUsedTracker());
