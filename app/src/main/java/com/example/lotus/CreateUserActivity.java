@@ -51,7 +51,7 @@ public class CreateUserActivity extends AppCompatActivity {
         });
     }
 
-    private boolean insertUserRecord(String Username,String Email, String Password) {
+    boolean insertUserRecord(String Username,String Email, String Password) {
         User user = repository.getUserByUsername(Username);
         if (user!=null) {
             Toast.makeText(this, "The User already exists. Please enter a new Username", Toast.LENGTH_SHORT).show();
